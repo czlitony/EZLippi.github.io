@@ -3,7 +3,7 @@ layout: default
 title: "关于：About"
 ---
 
-## Self Introduction：
+## Self Introduction
 
 * Li Chengzhi
 * Programming enthusiasts
@@ -12,14 +12,14 @@ title: "关于：About"
 ## Contact
 
 <p class="contact">
- QQ:      1271673214
- WeChat:  lichengzhi000
- Email:   czli.tony@gmail.com
- Address: Shanghai, China
+* QQ:      1271673214
+* WeChat:  lichengzhi000
+* Email:   czli.tony@gmail.com
+* Address: Shanghai, China
 </p>
 
-## About This Page：
+## About This Page
 
-* On [Github](https://github.com/czlitony/czlitony.github.io)
+* Project source on [Github](https://github.com/czlitony/czlitony.github.io)
 * Template comes from:[Useful Paradigm](http://usefulparadigm.com/)
 * Fork from:[ezlippi](https://github.com/EZLippi/EZLippi.github.io)
