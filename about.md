@@ -18,6 +18,6 @@ title: "关于：About"
 
 ## About This Page
 
-* Project source on [Github](https://github.com/czlitony/czlitony.github.io)
+* Project source code on [Github](https://github.com/czlitony/czlitony.github.io)
 * Template comes from:[Useful Paradigm](http://usefulparadigm.com/)
 * Fork from:[ezlippi](https://github.com/EZLippi/EZLippi.github.io)
