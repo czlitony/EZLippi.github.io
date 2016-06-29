@@ -1,0 +1,461 @@
+<p>###什么是Gradle
+Gradle是一种依赖管理工具，基于Groovy语言，面向Java应用为主，它抛弃了基于XML的各种繁琐配置，取而代之的是一种基于Groovy的领域特定（DSL）语言。Android Studio中新建项目成功后自动下载Gradle。
+Gradle有几个基本组件：</p>
+
+<p>1.整个项目的gradle配置文件build.gradle</p>
+
+<figure class="highlight"><pre><code class="language-groovy" data-lang="groovy"><span class="c1">// Top-level build file where you can add configuration options common to all sub-projects/modules.</span>
+
+<span class="n">buildscript</span> <span class="o">{</span>
+ <span class="n">repositories</span> <span class="o">{</span>
+        <span class="n">mavenCentral</span><span class="o">()</span>
+    <span class="o">}</span>
+    <span class="n">dependencies</span> <span class="o">{</span>
+        <span class="n">classpath</span> <span class="s1">'com.android.tools.build:gradle:1.1.0'</span>
+
+    <span class="c1">// NOTE: Do not place your application dependencies here; they belong</span>
+    <span class="c1">// in the individual module build.gradle files</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="n">allprojects</span> <span class="o">{</span>
+    <span class="n">repositories</span> <span class="o">{</span>
+        <span class="n">mavenCentral</span><span class="o">()</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre></figure>
+
+<p>内容主要包含了两个方面：一个是声明仓库的源，我这里用的是mavenCentral(), jcenter可以理解成是一个新的中央远程仓库，兼容maven中心仓库，而且性能更优。另一个是声明了android gradle plugin的版本，android studio 1.1正式版必须要求支持gradle plugin 1.1的版本。</p>
+
+<hr />
+
+<p>2.app文件夹下这个Module的gradle配置文件，也可以算是整个项目最主要的gradle配置文件</p>
+
+<figure class="highlight"><pre><code class="language-groovy" data-lang="groovy"><span class="n">apply</span> <span class="nl">plugin:</span> <span class="s1">'com.android.application'</span>
+
+<span class="n">buildscript</span> <span class="o">{</span>
+    <span class="n">repositories</span> <span class="o">{</span>
+        <span class="n">mavenCentral</span><span class="o">()</span>
+    <span class="o">}</span>
+    <span class="n">dependencies</span> <span class="o">{</span>
+        <span class="n">classpath</span> <span class="s1">'com.android.tools.build:gradle:1.1.0'</span>
+
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="n">android</span> <span class="o">{</span>
+    <span class="n">compileSdkVersion</span> <span class="mi">17</span>
+    <span class="n">buildToolsVersion</span> <span class="s2">"21.1.2"</span>
+
+    <span class="n">defaultConfig</span> <span class="o">{</span>
+        <span class="n">applicationId</span> <span class="s2">"com.lippi.recorder"</span>
+        <span class="n">minSdkVersion</span> <span class="mi">15</span>
+        <span class="n">targetSdkVersion</span> <span class="mi">17</span>
+        <span class="n">versionCode</span> <span class="mi">1</span>
+        <span class="n">versionName</span> <span class="s1">'1.4'</span>
+
+        <span class="c1">// dex突破65535的限制</span>
+        <span class="n">multiDexEnabled</span> <span class="kc">true</span>
+        <span class="c1">// AndroidManifest.xml 里面UMENG_CHANNEL的value为 ${UMENG_CHANNEL_VALUE}</span>
+        <span class="n">manifestPlaceholders</span> <span class="o">=</span> <span class="o">[</span><span class="nl">UMENG_CHANNEL_VALUE:</span> <span class="s2">"channel_name"</span><span class="o">]</span>
+    <span class="o">}</span>
+
+    <span class="n">sourceSets</span> <span class="o">{</span>
+        <span class="n">main</span> <span class="o">{</span>
+            <span class="n">manifest</span><span class="o">.</span><span class="na">srcFile</span> <span class="s1">'src/main/AndroidManifest.xml'</span>
+            <span class="n">java</span><span class="o">.</span><span class="na">srcDirs</span> <span class="o">=</span> <span class="o">[</span><span class="s1">'src/main/java'</span><span class="o">]</span>
+            <span class="n">resources</span><span class="o">.</span><span class="na">srcDirs</span> <span class="o">=</span> <span class="o">[</span><span class="s1">'src/main/resources'</span><span class="o">]</span>
+            <span class="n">aidl</span><span class="o">.</span><span class="na">srcDirs</span> <span class="o">=</span> <span class="o">[</span><span class="s1">'src/main/aidl'</span><span class="o">]</span>
+            <span class="n">renderscript</span><span class="o">.</span><span class="na">srcDirs</span> <span class="o">=</span> <span class="o">[</span><span class="s1">'src/maom'</span><span class="o">]</span>
+            <span class="n">res</span><span class="o">.</span><span class="na">srcDirs</span> <span class="o">=</span> <span class="o">[</span><span class="s1">'src/main/res'</span><span class="o">]</span>
+            <span class="n">assets</span><span class="o">.</span><span class="na">srcDirs</span> <span class="o">=</span> <span class="o">[</span><span class="s1">'src/main/assets'</span><span class="o">]</span>
+            <span class="n">jniLibs</span><span class="o">.</span><span class="na">srcDir</span> <span class="s1">'src/main/jniLibs'</span>
+        <span class="o">}</span>
+
+        <span class="c1">// Move the tests to tests/java, tests/res, etc...</span>
+        <span class="n">instrumentTest</span><span class="o">.</span><span class="na">setRoot</span><span class="o">(</span><span class="s1">'tests'</span><span class="o">)</span>
+
+        <span class="c1">// Move the build types to build-types/&lt;type&gt;</span>
+        <span class="c1">// For instance, build-types/debug/java, build-types/debug/AndroidManifest.xml, ...</span>
+        <span class="c1">// This moves them out of them default location under src/&lt;type&gt;/... which would</span>
+        <span class="c1">// conflict with src/ being used by the main source set.</span>
+        <span class="c1">// Adding new build types or product flavors should be accompanied</span>
+        <span class="c1">// by a similar customization.</span>
+        <span class="n">debug</span><span class="o">.</span><span class="na">setRoot</span><span class="o">(</span><span class="s1">'build-types/debug'</span><span class="o">)</span>
+        <span class="n">release</span><span class="o">.</span><span class="na">setRoot</span><span class="o">(</span><span class="s1">'build-types/release'</span><span class="o">)</span>
+    <span class="o">}</span>
+    <span class="c1">//执行lint检查，有任何的错误或者警告提示，都会终止构建，我们可以将其关掉。</span>
+    <span class="n">lintOptions</span> <span class="o">{</span>
+        <span class="n">abortOnError</span> <span class="kc">false</span>
+    <span class="o">}</span>
+
+    <span class="c1">//签名</span>
+    <span class="n">signingConfigs</span> <span class="o">{</span>
+        <span class="n">debug</span> <span class="o">{</span>
+            <span class="n">storeFile</span> <span class="nf">file</span><span class="o">(</span><span class="s2">"/home/lippi/.android/debug.keystore"</span><span class="o">)</span>
+        <span class="o">}</span>
+        <span class="n">relealse</span> <span class="o">{</span>
+            <span class="c1">//这样写就得把demo.jk文件放在项目目录</span>
+            <span class="n">storeFile</span> <span class="nf">file</span><span class="o">(</span><span class="s2">"recorder.jks"</span><span class="o">)</span>
+            <span class="n">storePassword</span> <span class="s2">"recorder"</span>
+            <span class="n">keyAlias</span> <span class="s2">"recorder"</span>
+            <span class="n">keyPassword</span> <span class="s2">"recorder"</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="n">buildTypes</span> <span class="o">{</span>
+        <span class="n">debug</span> <span class="o">{</span>
+            <span class="c1">// 显示Log</span>
+            <span class="n">buildConfigField</span> <span class="s2">"boolean"</span><span class="o">,</span> <span class="s2">"LOG_DEBUG"</span><span class="o">,</span> <span class="s2">"true"</span>
+
+            <span class="n">versionNameSuffix</span> <span class="s2">"-debug"</span>
+            <span class="n">minifyEnabled</span> <span class="kc">false</span>
+            <span class="n">zipAlignEnabled</span> <span class="kc">false</span>
+            <span class="n">shrinkResources</span> <span class="kc">false</span>
+            <span class="n">signingConfig</span> <span class="n">signingConfigs</span><span class="o">.</span><span class="na">debug</span>
+        <span class="o">}</span>
+
+        <span class="n">release</span> <span class="o">{</span>
+            <span class="c1">// 不显示Log</span>
+            <span class="n">buildConfigField</span> <span class="s2">"boolean"</span><span class="o">,</span> <span class="s2">"LOG_DEBUG"</span><span class="o">,</span> <span class="s2">"false"</span>
+            <span class="c1">//混淆</span>
+            <span class="n">minifyEnabled</span> <span class="kc">true</span>
+            <span class="c1">//Zipalign优化</span>
+            <span class="n">zipAlignEnabled</span> <span class="kc">true</span>
+
+            <span class="c1">// 移除无用的resource文件</span>
+            <span class="n">shrinkResources</span> <span class="kc">true</span>
+            <span class="c1">//前一部分代表系统默认的android程序的混淆文件，该文件已经包含了基本的混淆声明</span>
+            <span class="n">proguardFiles</span> <span class="nf">getDefaultProguardFile</span><span class="o">(</span><span class="s1">'proguard-android.txt'</span><span class="o">),</span> <span class="s1">'proguard.cfg'</span>
+            <span class="c1">//签名</span>
+            <span class="n">signingConfig</span> <span class="n">signingConfigs</span><span class="o">.</span><span class="na">relealse</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="c1">//渠道Flavors，配置不同风格的app</span>
+    <span class="n">productFlavors</span> <span class="o">{</span>
+        <span class="n">GooglePlay</span> <span class="o">{}</span>
+        <span class="n">xiaomi</span> <span class="o">{}</span>
+        <span class="n">umeng</span> <span class="o">{}</span>
+        <span class="n">_360</span> <span class="o">{}</span>
+        <span class="n">baidu</span> <span class="o">{}</span>
+        <span class="n">wandoujia</span> <span class="o">{}</span>
+    <span class="o">}</span>
+    <span class="c1">//批量配置</span>
+    <span class="n">productFlavors</span><span class="o">.</span><span class="na">all</span> <span class="o">{</span> <span class="n">flavor</span> <span class="o">-&gt;</span>
+        <span class="n">flavor</span><span class="o">.</span><span class="na">manifestPlaceholders</span> <span class="o">=</span> <span class="o">[</span><span class="nl">UMENG_CHANNEL_VALUE:</span> <span class="n">name</span><span class="o">]</span>
+    <span class="o">}</span>
+
+    <span class="n">compileOptions</span> <span class="o">{</span>
+        <span class="n">sourceCompatibility</span> <span class="n">JavaVersion</span><span class="o">.</span><span class="na">VERSION_1_7</span>
+        <span class="n">targetCompatibility</span> <span class="n">JavaVersion</span><span class="o">.</span><span class="na">VERSION_1_7</span>
+    <span class="o">}</span>
+    <span class="n">applicationVariants</span><span class="o">.</span><span class="na">all</span> <span class="o">{</span> <span class="n">variant</span> <span class="o">-&gt;</span>
+        <span class="n">variant</span><span class="o">.</span><span class="na">outputs</span><span class="o">.</span><span class="na">each</span> <span class="o">{</span> <span class="n">output</span> <span class="o">-&gt;</span>
+            <span class="kt">def</span> <span class="n">outputFile</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="na">outputFile</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">outputFile</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">outputFile</span><span class="o">.</span><span class="na">name</span><span class="o">.</span><span class="na">endsWith</span><span class="o">(</span><span class="s1">'.apk'</span><span class="o">))</span> <span class="o">{</span>
+                <span class="kt">def</span> <span class="n">fileName</span> <span class="o">=</span> <span class="n">outputFile</span><span class="o">.</span><span class="na">name</span><span class="o">.</span><span class="na">replace</span><span class="o">(</span><span class="s2">".apk"</span><span class="o">,</span> <span class="s2">"-${defaultConfig.versionName}.apk"</span><span class="o">)</span>
+                <span class="n">output</span><span class="o">.</span><span class="na">outputFile</span> <span class="o">=</span> <span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="n">outputFile</span><span class="o">.</span><span class="na">parent</span><span class="o">,</span> <span class="n">fileName</span><span class="o">)</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="n">dependencies</span> <span class="o">{</span>
+        <span class="n">compile</span> <span class="nf">fileTree</span><span class="o">(</span><span class="nl">include:</span> <span class="o">[</span><span class="s1">'*.jar'</span><span class="o">],</span> <span class="nl">dir:</span> <span class="s1">'libs'</span><span class="o">)</span>
+        <span class="n">compile</span> <span class="s1">'org.apache.commons:commons-math:2.1'</span>
+        <span class="n">compile</span> <span class="s1">'org.slf4j:slf4j-log4j12:1.7.5'</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre></figure>
+
+<ul>
+  <li>
+    <p>文件开头apply plugin是最新gradle版本的写法，以前的写法是apply plugin: ‘android’, 如果还是以前的写法，请改正过来。</p>
+  </li>
+  <li>
+    <p>buildToolsVersion这个需要你本地安装该版本才行，很多人导入新的第三方库，失败的原因之一是build version的版本不对，这个可以手动更改成你本地已有的版本或者打开 SDK Manager 去下载对应版本。</p>
+  </li>
+  <li>
+    <p>applicationId代表应用的包名，也是最新的写法，这里就不在多说了。</p>
+  </li>
+  <li>android 5.0开始默认安装jdk1.7才能编译</li>
+  <li>
+    <p>minifyEnabled（混淆）也是最新的语法，很早之前是runProguard,这个也需要更新下。</p>
+  </li>
+  <li>proguardFiles这部分有两段，前一部分代表系统默认的android程序的混淆文件，该文件已经包含了基本的混淆声明，免去了我们很多事，这个文件的目录在 <strong>/tools/proguard/proguard-android.txt</strong> , 后一部分是我们项目里的自定义的混淆文件，目录就在 <strong>app/proguard-rules.txt</strong> , 如果你用Studio 1.0创建的新项目默认生成的文件名是 <strong>proguard-rules.pro</strong> , 这个名字没关系，在这个文件里你可以声明一些第三方依赖的一些混淆规则,后面会具体讲到。</li>
+</ul>
+
+<p>compile project(‘:extras:ShimmerAndroid’)这一行是因为项目中存在其他Module，你可以理解成Android Library，由于Gradle的普及以及远程仓库的完善，这种依赖渐渐的会变得非常不常见，但是你需要知道有这种依赖的。</p>
+
+<hr />
+
+<p>3.gradle目录下有个 wrapper 文件夹，里面可以看到有两个文件，我们主要看下 gradle-wrapper.properties 这个文件的内容：</p>
+
+<figure class="highlight"><pre><code class="language-groovy" data-lang="groovy"> 
+<span class="err">#</span><span class="n">Fri</span> <span class="n">Dec</span> <span class="mi">19</span> <span class="mi">21</span><span class="o">:</span><span class="mi">59</span><span class="o">:</span><span class="mi">01</span> <span class="n">CST</span> <span class="mi">2014</span>
+<span class="n">distributionBase</span><span class="o">=</span><span class="n">GRADLE_USER_HOME</span>
+<span class="n">distributionPath</span><span class="o">=</span><span class="n">wrapper</span><span class="s">/dists
+zipStoreBase=GRADLE_USER_HOME
+zipStorePath=wrapper/</span><span class="n">dists</span>
+<span class="n">distributionUrl</span><span class="o">=</span><span class="n">https</span><span class="err">\</span><span class="o">:</span><span class="c1">//services.gradle.org/distributions/gradle-2.2.1-all.zip</span>
+ </code></pre></figure>
+
+<p>可以看到里面声明了gradle的目录与下载路径以及当前项目使用的gradle版本，这些默认的路径我们一般不会更改的，这个文件里指明的gradle版本不对也是很多导包不成功的原因之一</p>
+
+<hr />
+
+<p>4.settings.gradle</p>
+
+<p>这个文件是全局的项目配置文件，里面主要声明一些需要加入gradle的module</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>include ':recorder'
+</code></pre>
+</div>
+
+<p>文件中recorder是项目的module，如果还有其他module按照相同的格式加上去。</p>
+
+<hr />
+
+<p>##Gradle多渠道打包</p>
+
+<p>由于国内Android市场众多渠道，为了统计每个渠道的下载及其它数据统计，就需要我们针对每个渠道单独打包，如果让你打几十个市场的包岂不烦死了，不过有了Gradle，这再也不是事了。
+以友盟统计为例，在AndroidManifest.xml里面会有这么一段：</p>
+
+<figure class="highlight"><pre><code class="language-groovy" data-lang="groovy"><span class="o">&lt;</span><span class="n">meta</span><span class="o">-</span><span class="n">data</span>
+<span class="nl">android:</span><span class="n">name</span><span class="o">=</span><span class="s2">"UMENG_CHANNEL"</span>
+<span class="nl">android:</span><span class="n">value</span><span class="o">=</span><span class="s2">"Channel_ID"</span> <span class="o">/&gt;</span></code></pre></figure>
+
+<p>里面的Channel_ID就是渠道标示。我们的目标就是在编译的时候这个值能够自动变化。
+*   第一步 在AndroidManifest.xml里配置PlaceHolder</p>
+
+<figure class="highlight"><pre><code class="language-groovy" data-lang="groovy"><span class="o">&lt;</span><span class="n">meta</span><span class="o">-</span><span class="n">data</span>
+<span class="nl">android:</span><span class="n">name</span><span class="o">=</span><span class="s2">"UMENG_CHANNEL"</span>
+<span class="nl">android:</span><span class="n">value</span><span class="o">=</span><span class="s2">"${UMENG_CHANNEL_VALUE}"</span> <span class="o">/&gt;</span></code></pre></figure>
+
+<ul>
+  <li>第二步 在build.gradle  设置productFlavors</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-groovy" data-lang="groovy"><span class="n">android</span> <span class="o">{</span> 
+<span class="n">productFlavors</span> <span class="o">{</span>
+    <span class="n">xiaomi</span> <span class="o">{}</span>
+    <span class="n">_360</span> <span class="o">{}</span>
+    <span class="n">baidu</span> <span class="o">{}</span>
+    <span class="n">wandoujia</span> <span class="o">{}</span>
+<span class="o">}</span> 
+
+<span class="n">productFlavors</span><span class="o">.</span><span class="na">all</span> <span class="o">{</span> 
+    <span class="n">flavor</span> <span class="o">-&gt;</span> <span class="n">flavor</span><span class="o">.</span><span class="na">manifestPlaceholders</span> <span class="o">=</span> <span class="o">[</span><span class="nl">UMENG_CHANNEL_VALUE:</span> <span class="n">name</span><span class="o">]</span> 
+    <span class="o">}</span>
+<span class="o">}</span></code></pre></figure>
+
+<p>然后直接执行<code class="highlighter-rouge"> ./gradlew assembleRelease </code>然后就等待打包完成吧。</p>
+
+<p>assemble 这个命令，会结合 Build Type 创建自己的task，如:</p>
+
+<ul>
+  <li>
+    <p>./gradlew assembleDebug</p>
+  </li>
+  <li>
+    <p>./gradlew assembleRelease</p>
+  </li>
+</ul>
+
+<p>除此之外 assemble 还能和 Product Flavor 结合创建新的任务，其实 assemble 是和 Build Variants 一起结合使用的，而 Build Variants = Build Type + Product Flavor ， 举个例子大家就明白了：</p>
+
+<p>如果我们想打包wandoujia渠道的release版本，执行如下命令就好了：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>./gradlew assembleWandoujiaRelease
+</code></pre>
+</div>
+
+<p>如果我们只打wandoujia渠道版本，则：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>./gradlew assembleWandoujia
+</code></pre>
+</div>
+
+<p>此命令会生成wandoujia渠道的Release和Debug版本</p>
+
+<p>同理我想打全部Release版本：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>./gradlew assembleRelease
+</code></pre>
+</div>
+
+<p>这条命令会把Product Flavor下的所有渠道的Release版本都打出来。</p>
+
+<hr />
+
+<p>##代码混淆</p>
+
+<p>下面是常见的的proguard.cfg配置项：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>    #指定代码的压缩级别
+    -optimizationpasses 5
+    
+    #包明不混合大小写
+    -dontusemixedcaseclassnames
+    
+    #不去忽略非公共的库类
+    -dontskipnonpubliclibraryclasses
+    
+     #优化  不优化输入的类文件
+    -dontoptimize
+    
+     #预校验
+    -dontpreverify
+    
+     #混淆时是否记录日志
+    -verbose
+    
+     # 混淆时所采用的算法
+    -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
+    
+    #保护注解
+    -keepattributes *Annotation*
+    
+    # 保持哪些类不被混淆
+    -keep public class * extends android.app.Fragment
+    -keep public class * extends android.app.Activity
+    -keep public class * extends android.app.Application
+    -keep public class * extends android.app.Service
+    -keep public class * extends android.content.BroadcastReceiver
+    -keep public class * extends android.content.ContentProvider
+    -keep public class * extends android.app.backup.BackupAgentHelper
+    -keep public class * extends android.preference.Preference
+    -keep public class com.android.vending.licensing.ILicensingService
+    #如果有引用v4包可以添加下面这行
+    -keep public class * extends android.support.v4.app.Fragment
+    
+    
+    
+    #忽略警告
+    -ignorewarning
+    
+    ##记录生成的日志数据,gradle build时在本项目根目录输出##
+    
+    #apk 包内所有 class 的内部结构
+    -dump class_files.txt
+    #未混淆的类和成员
+    -printseeds seeds.txt
+    #列出从 apk 中删除的代码
+    -printusage unused.txt
+    #混淆前后的映射
+    -printmapping mapping.txt
+    
+    ########记录生成的日志数据，gradle build时 在本项目根目录输出-end######
+    
+    
+    #####混淆保护自己项目的部分代码以及引用的第三方jar包library#######
+    
+    #-libraryjars libs/umeng-analytics-v5.2.4.jar
+    
+    #三星应用市场需要添加:sdk-v1.0.0.jar,look-v1.0.1.jar
+    #-libraryjars libs/sdk-v1.0.0.jar
+    #-libraryjars libs/look-v1.0.1.jar
+    
+    #如果不想混淆 keep 掉
+    -keep class com.lippi.recorder.iirfilterdesigner.** {*; }
+    #友盟
+    -keep class com.umeng.**{*;}
+    #项目特殊处理代码
+    
+    #忽略警告
+    -dontwarn com.lippi.recorder.utils**
+    #保留一个完整的包
+    -keep class com.lippi.recorder.utils.** {
+        *;
+     }
+    
+    -keep class  com.lippi.recorder.utils.AudioRecorder{*;}
+    
+    
+    #如果引用了v4或者v7包
+    -dontwarn android.support.**
+    
+    ####混淆保护自己项目的部分代码以及引用的第三方jar包library-end####
+    
+    -keep public class * extends android.view.View {
+        public &lt;init&gt;(android.content.Context);
+        public &lt;init&gt;(android.content.Context, android.util.AttributeSet);
+        public &lt;init&gt;(android.content.Context, android.util.AttributeSet, int);
+        public void set*(...);
+    }
+    
+    #保持 native 方法不被混淆
+    -keepclasseswithmembernames class * {
+        native &lt;methods&gt;;
+    }
+    
+    #保持自定义控件类不被混淆
+    -keepclasseswithmembers class * {
+        public &lt;init&gt;(android.content.Context, android.util.AttributeSet);
+    }
+    
+    #保持自定义控件类不被混淆
+    -keepclassmembers class * extends android.app.Activity {
+       public void *(android.view.View);
+    }
+    
+    #保持 Parcelable 不被混淆
+    -keep class * implements android.os.Parcelable {
+      public static final android.os.Parcelable$Creator *;
+    }
+    
+    #保持 Serializable 不被混淆
+    -keepnames class * implements java.io.Serializable
+    
+    #保持 Serializable 不被混淆并且enum 类也不被混淆
+    -keepclassmembers class * implements java.io.Serializable {
+        static final long serialVersionUID;
+        private static final java.io.ObjectStreamField[] serialPersistentFields;
+        !static !transient &lt;fields&gt;;
+        !private &lt;fields&gt;;
+        !private &lt;methods&gt;;
+        private void writeObject(java.io.ObjectOutputStream);
+        private void readObject(java.io.ObjectInputStream);
+        java.lang.Object writeReplace();
+        java.lang.Object readResolve();
+    }
+    
+    #保持枚举 enum 类不被混淆 如果混淆报错，建议直接使用上面的 -keepclassmembers class * implements java.io.Serializable即可
+    #-keepclassmembers enum * {
+    #  public static **[] values();
+    #  public static ** valueOf(java.lang.String);
+    #}
+    
+    -keepclassmembers class * {
+        public void *ButtonClicked(android.view.View);
+    }
+    
+    #不混淆资源类
+    -keepclassmembers class **.R$* {
+        public static &lt;fields&gt;;
+    }
+    
+    #避免混淆泛型 如果混淆报错建议关掉
+    #–keepattributes Signature
+    
+    #移除log 测试了下没有用还是建议自己定义一个开关控制是否输出日志
+    #-assumenosideeffects class android.util.Log {
+    #    public static boolean isLoggable(java.lang.String, int);
+    #    public static int v(...);
+    #    public static int i(...);
+    #    public static int w(...);
+    #    public static int d(...);
+    #    public static int e(...);
+    #}
+    
+    #如果用用到Gson解析包的，直接添加下面这几行就能成功混淆，不然会报错。
+    #gson
+    #-libraryjars libs/gson-2.2.2.jar
+    -keepattributes Signature
+    # Gson specific classes
+    -keep class sun.misc.Unsafe { *; }
+    # Application classes that will be serialized/deserialized over Gson
+    -keep class com.google.gson.examples.android.model.** { *; }
+</code></pre>
+</div>
+
+<hr />
+
+<p>参考文献：<a href="http://tools.android.com/tech-docs/new-build-system/tips">Android Tools Project Site</a></p>

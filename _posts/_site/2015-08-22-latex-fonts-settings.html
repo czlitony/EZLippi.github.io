@@ -1,0 +1,55 @@
+<p>Latex默认是不支持中文的,后来有人开发了XeLatex来支持非英文字符,xetex是一种使用Unicode的TeX排版引擎,并默认其输入文件为UTF-8编码，也即,英文字符与非英文字符不再有区别，原生支持系统字体，这意味着我们无需再额外编译字体, 故可以在不进行额外配置的情况下直接使用操作系统中安装的字体。</p>
+
+<p>安装完TexLive后,编写下面的tex文件：</p>
+
+<figure class="highlight"><pre><code class="language-tex" data-lang="tex"><span class="k">\documentclass</span><span class="na">[12pt,a4paper]</span><span class="p">{</span>article<span class="p">}</span>
+<span class="k">\usepackage</span><span class="p">{</span>xltxtra,fontspec,xunicode<span class="p">}</span>
+
+<span class="k">\setmainfont</span><span class="p">{</span>WenQuanYi Zen Hei<span class="p">}</span> <span class="c">% 设置文档默认字体</span>
+<span class="k">\date</span><span class="p">{}</span> <span class="c">% 不显示文档生成日期</span>
+<span class="k">\title</span><span class="p">{</span><span class="k">\XeTeX</span><span class="p">{}</span> 中英文环境测试<span class="p">}</span>
+
+<span class="nt">\begin{document}</span>
+<span class="k">\maketitle</span>
+<span class="k">\XeTeX</span><span class="p">{}</span> is a <span class="k">\TeX</span><span class="p">{}</span> typesetting engine using Unicode and supporting modern font technologies.<span class="k">\\</span>
+<span class="k">\XeTeX</span><span class="p">{}</span> 是一个使用Unicode的<span class="k">\TeX</span><span class="p">{}</span>排版系统，并支持一些现代字体技术.<span class="k">\\</span>
+<span class="nt">\end{document}</span></code></pre></figure>
+
+<p>使用下面命令编译:<code class="highlighter-rouge">XeLatex test.tex</code></p>
+
+<p>输出结果如下：</p>
+
+<p><img src="/images/latex1.png" alt="" /></p>
+
+<p>上面的英文也使用了中文字体, 看上去不是很美观. 于是, xetex 和 CJK 商量了一下, 就有了xeCJK 宏包, 可以分别指定中英文字体, 于是可以很好的排版中英混合的文章了．</p>
+
+<p>当然首先是要使用xeCJK包,添加上<code class="highlighter-rouge">\usepackage[slantfont,boldfont]{xeCJK}</code>
+分别设置中英文字体, 英文字体可以不用设置, xetex会调用默认的字体:<code class="highlighter-rouge">\setCJKmainfont{SimKai}   % 设置缺省中文字体为楷体</code>
+下面是测试文件：</p>
+
+<figure class="highlight"><pre><code class="language-tex" data-lang="tex">	<span class="k">\documentclass</span><span class="na">[12pt,a4paper]</span><span class="p">{</span>article<span class="p">}</span>
+<span class="k">\usepackage</span><span class="p">{</span>xltxtra,fontspec,xunicode<span class="p">}</span>
+<span class="k">\usepackage</span><span class="na">[slantfont,boldfont]</span><span class="p">{</span>xeCJK<span class="p">}</span>
+<span class="k">\setCJKmainfont</span><span class="p">{</span>WenQuanYi Zen Hei<span class="p">}</span>   <span class="c">% 设置缺省中文字体</span>
+<span class="c">%\setCJKmonofont{Hei}   % 设置等宽字体</span>
+
+<span class="c">%\setmainfont{Optima}   %% 不指定，使用Tex的默认英文衬线字体</span>
+<span class="c">%\setmonofont{Monaco}   % 英文等宽字体</span>
+<span class="c">%\setsansfont{Trebuchet MS} % 英文无衬线字体</span>
+<span class="k">\date</span><span class="p">{}</span> <span class="c">% 不显示文档生成日期</span>
+<span class="k">\title</span><span class="p">{</span><span class="k">\XeTeX</span><span class="p">{}</span> 中英文环境测试<span class="p">}</span>
+
+<span class="nt">\begin{document}</span>
+<span class="k">\maketitle</span>
+<span class="k">\XeTeX</span><span class="p">{}</span> is a <span class="k">\TeX</span><span class="p">{}</span> typesetting engine using Unicode and supporting modern font technologies.<span class="k">\\</span>
+
+<span class="k">\XeTeX</span><span class="p">{}</span> 是一个使用Unicode的<span class="k">\TeX</span><span class="p">{}</span>排版系统，并支持一些现代字体技术.<span class="k">\\</span>
+<span class="nt">\end{document}</span>
+
+ </code></pre></figure>
+
+<p>输出结果如下：
+<img src="/images/latex2.png" alt="" /></p>
+
+<p>这样效果就好很多了．</p>
+

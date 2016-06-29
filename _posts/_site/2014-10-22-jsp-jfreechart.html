@@ -1,0 +1,88 @@
+<p>项目中需要弄一个服务器，从数据库中读取数据，然后根据http请求显示制定的数据在曲线中，这里用到一个曲线库，<a href="http://www.jfree.org/jfreechart/">Jfreechart</a>，用java写的，用来生成柱状图，饼状图，时间序列等。
+整个流程如下：
+<img src="/images/images/chart.png" alt="" /></p>
+
+<p>jsp代码如下：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="err">&lt;</span>%@ page contentType="text/html;charset=UTF-8"%&gt;
+<span class="err">&lt;</span>%@ page import="java.awt.*,
+java.util.List,
+javax.swing.JPanel,
+org.jfree.chart.ChartFactory,
+org.jfree.chart.ChartPanel,
+org.jfree.chart.JFreeChart,
+org.jfree.chart.axis.DateAxis,
+org.jfree.chart.plot.XYPlot,
+org.jfree.chart.renderer.xy.XYItemRenderer,
+org.jfree.chart.renderer.xy.XYLineAndShapeRenderer,
+org.jfree.data.time.*,
+org.jfree.data.time.TimeSeries,
+org.jfree.data.time.TimeSeriesCollection,
+org.jfree.data.xy.XYDataset"%&gt;
+<span class="err">&lt;</span>%@ page import="org.jfree.chart.ChartUtilities"%&gt;
+<span class="err">&lt;</span>%@ page import="java.util.*"%&gt;
+<span class="err">&lt;</span>%@ page import = "com.lippi.medic.server.*"%&gt;
+<span class="err">&lt;</span>%@ page import = "java.io.*" %&gt;
+
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+<span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">"Content-Type"</span> <span class="na">content=</span><span class="s">"text/html"</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;h1</span> <span class="na">align=</span><span class="s">"center"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;font</span> <span class="na">font-size=</span><span class="s">"5"</span> <span class="na">color=</span><span class="s">"black"</span><span class="nt">&gt;</span>欢迎访问肌电信号数据库<span class="nt">&lt;/font&gt;</span>
+<span class="nt">&lt;/h1&gt;</span>
+<span class="err">&lt;</span>%
+ //创建时序图对象
+ TimeSeries timeSeries = new TimeSeries("肌电信号");
+ //这里的logs是从servlet中设置的request属性值
+ List<span class="nt">&lt;MedicLogs&gt;</span> logs = (List)request.getAttribute("logs");
+ Iterator<span class="nt">&lt;MedicLogs&gt;</span> iterator = logs.iterator();
+ 		while(iterator.hasNext()){
+ 			MedicLogs log = iterator.next();
+ 			Minute minute = new Minute(log.getCreateDate());
+ 			double data = log.getData();
+ 			timeSeries.add(minute, data);
+ 		}
+ TimeSeriesCollection collection = new TimeSeriesCollection();
+ collection.addSeries(timeSeries);
+ collection.setDomainIsPointsInTime(true);
+
+ JFreeChart chart = ChartFactory.createTimeSeriesChart("肌电信号","时间",
+                        "幅值", collection,true,true,false);
+ chart.setBackgroundPaint(Color.white);//设置曲线图背景色
+ XYPlot plot = (XYPlot) chart.getPlot();
+ XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer)plot.getRenderer();
+ plot.setBackgroundPaint(Color.white);//设置网格背景颜色
+ plot.setDomainGridlinePaint(Color.pink);//设置网格竖线颜色
+ plot.setRangeGridlinePaint(Color.pink);//设置网格横线颜色
+ renderer.setBaseShapesVisible(true);//设置曲线是否显示数据点
+ final File file = new File("/home/lippi/apache-tomcat-8.0.11/webapps/medicdatabase/chart.png");
+ ChartUtilities.saveChartAsPNG(file, chart, 500, 300);
+ %&gt;
+ <span class="nt">&lt;h1</span> <span class="na">align=</span><span class="s">"center"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;IMG</span> <span class="na">SRC=</span><span class="s">"chart.png"</span> <span class="na">WIDTH=</span><span class="s">"600"</span> <span class="na">HEIGHT=</span><span class="s">"400"</span> <span class="na">BORDER=</span><span class="s">"0"</span> <span class="na">USEMAP=</span><span class="s">"#chart"</span><span class="nt">&gt;</span>
+
+<span class="nt">&lt;br&gt;&lt;br&gt;</span>
+
+<span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">"display.do"</span> <span class="na">method=</span><span class="s">"post"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="na">name=</span><span class="s">"back"</span> <span class="na">value=</span><span class="s">"载入前5000条数据"</span> <span class="nt">&gt;</span>
+    
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="na">name=</span><span class="s">"forward"</span> <span class="na">value=</span><span class="s">"载入后5000条数据"</span> <span class="nt">&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre>
+</div>
+
+<p>附上Jsp代码的转换和编译过程：</p>
+
+<ol>
+  <li>客户第一次请求这个jsp，容器尝试将jsp页面转换成一个servlet类的java代码</li>
+  <li>容器把java源文件编译成.class文件</li>
+  <li>web容器加载新生成的servlet类</li>
+  <li>容器实例化servlet，并调用servlet的jspInit()方法,此时对象成为一个完整的servlet</li>
+  <li>容器创建一个新线程来处理客户的请求，servlet的_jspService()方法运行</li>
+  <li>最终servlet向客户发回一个响应，或者把请求转发到另一个web应用组件，比如这个例子中的jsp。</li>
+</ol>
+
+<p>编译这个jsp代码需要用到两个jar文件，jfreechart-1.0.18.jar和jcommon-1.0.22.jar，把他们放到WEB-INF的lib文件夹下。</p>

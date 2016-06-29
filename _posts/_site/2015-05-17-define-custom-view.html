@@ -1,0 +1,342 @@
+<p>Android的UI元素都是基于View(屏幕中单个元素)和ViewGroup(元素的集合),Android有许多自带的组件和布局，比如Button、TextView、RelativeLayout。在app开发过程中我们需要自定义视图组件来满足我们的需求。通过继承自View或者View的子类，覆写onDraw或者onTouchEvent等方法来覆盖视图的行为。</p>
+
+<p>##创建完全自定义的组件</p>
+
+<p>创建自定义的组件主要围绕着以下五个方面：</p>
+
+<ul>
+  <li>绘图(Drawing)： 控制视图的渲染，通常通过覆写onDraw方法来实现</li>
+  <li>交互(Interaction)： 控制用户和视图的交互方式，比如OnTouchEvent,gestures</li>
+  <li>尺寸(Measurement)： 控制视图内容的维度，通过覆写onMeasure方法</li>
+  <li>属性(Attributes)： 在XML中定义视图的属性，使用TypedArray来获取属性值</li>
+  <li>持久化(Persistence)： 配置发生改变时保存和恢复状态，通过onSaveInstanceState和onRestoreInstanceState</li>
+</ul>
+
+<p>举个栗子，假设我们想创建一个图形允许用户点击的时候改变形状（方形、圆形、三角形）。如下所示：</p>
+
+<p><img src="/images/dag48.png" alt="" /></p>
+
+<p>###定义视图类</p>
+
+<p>我们创建一个ShapeSelectorView继承自View，实现必要的构造器，如下所示：</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java">	<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ShapeSelectorView</span> <span class="kd">extends</span> <span class="n">View</span> <span class="o">{</span>
+	  <span class="c1">// We must provide a constructor that takes a Context and an AttributeSet.</span>
+	  <span class="c1">// This constructor allows the UI to create and edit an instance of your view.</span>
+	  <span class="kd">public</span> <span class="n">ShapeSelectorView</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">,</span> <span class="n">AttributeSet</span> <span class="n">attrs</span><span class="o">)</span> <span class="o">{</span>
+		<span class="kd">super</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="n">attrs</span><span class="o">);</span>
+	    <span class="o">}</span>
+	<span class="o">}</span>
+	</code></pre></figure>
+
+<p>###添加视图到布局中</p>
+
+<figure class="highlight"><pre><code class="language-xml" data-lang="xml">	<span class="nt">&lt;RelativeLayout</span> <span class="na">xmlns:android=</span><span class="s">"http://schemas.android.com/apk/res/android"</span>
+	    <span class="na">xmlns:app=</span><span class="s">"http://schemas.android.com/apk/res-auto"</span>
+	    <span class="na">xmlns:tools=</span><span class="s">"http://schemas.android.com/tools"</span>
+	    <span class="na">android:layout_width=</span><span class="s">"match_parent"</span>
+	    <span class="na">android:layout_height=</span><span class="s">"match_parent"</span> <span class="nt">&gt;</span>
+	    <span class="nt">&lt;com.codepath.example.customviewdemo.ShapeSelectorView</span>
+		<span class="na">android:id=</span><span class="s">"@+id/shapeSelector"</span>
+		<span class="na">android:layout_width=</span><span class="s">"match_parent"</span>
+		<span class="na">android:layout_height=</span><span class="s">"match_parent"</span>
+		<span class="na">android:layout_alignParentRight=</span><span class="s">"true"</span>
+		<span class="na">android:layout_alignParentTop=</span><span class="s">"true"</span>
+		<span class="na">android:layout_alignParentLeft=</span><span class="s">"true"</span> <span class="nt">/&gt;</span>
+	<span class="nt">&lt;/RelativeLayout&gt;</span>
+	</code></pre></figure>
+
+<p>接下来我们定义一个命名空间app,这个命名空间允许Android自动解析而不需要指定具体的包名。</p>
+
+<p>###自定义属性</p>
+
+<p>视图可以通过XML来配置属性和样式，你需要想清楚要添加那些自定义的属性，比如我们想让用户可以选择形状的颜色、是否显示形状的名称，比如我们想让视图可以像下面一样配置：</p>
+
+<figure class="highlight"><pre><code class="language-xml" data-lang="xml">	<span class="nt">&lt;com.codepath.example.customviewdemo.ShapeSelectorView</span>
+	    <span class="na">app:shapeColor=</span><span class="s">"#7f0000"</span>
+	    <span class="na">app:displayShapeName=</span><span class="s">"true"</span>
+	    <span class="na">android:id=</span><span class="s">"@+id/shapeSelector"</span>
+	    <span class="err">...</span> <span class="nt">/&gt;</span>
+	</code></pre></figure>
+
+<p>为了能够定义shapeColor和displayShapeName,我们需要在res/values/attrs.xml中配置：</p>
+
+<figure class="highlight"><pre><code class="language-xml" data-lang="xml">	<span class="cp">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span>
+	<span class="nt">&lt;resources&gt;</span>
+	   <span class="nt">&lt;declare-styleable</span> <span class="na">name=</span><span class="s">"ShapeSelectorView"</span><span class="nt">&gt;</span>
+	       <span class="nt">&lt;attr</span> <span class="na">name=</span><span class="s">"shapeColor"</span> <span class="na">format=</span><span class="s">"color"</span> <span class="nt">/&gt;</span>
+	       <span class="nt">&lt;attr</span> <span class="na">name=</span><span class="s">"displayShapeName"</span> <span class="na">format=</span><span class="s">"boolean"</span> <span class="nt">/&gt;</span>
+	   <span class="nt">&lt;/declare-styleable&gt;</span>
+	<span class="nt">&lt;/resources&gt;</span>
+	</code></pre></figure>
+
+<p>对于每个你想自定义的属性你需要定义attr节点，每个节点有name和format属性，format属性是我们期望的值的类型，比如color,dimension,boolean,integer,float等。一旦定义好了属性，你可以像使用自带属性一样使用他们，唯一的区别在于你的自定义属性属于一个不同的命名空间，你可以在根视图的layout里面定义命名空间，一般情况下你只需要这样子指定：<code class="highlighter-rouge">http://schemas.android.com/apk/res/&lt;package_name&gt;</code>,但是你可以使用<code class="highlighter-rouge">http://schemas.android.com/apk/res-auto</code>自动解析命名空间。</p>
+
+<figure class="highlight"><pre><code class="language-xml" data-lang="xml">	<span class="cp">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span>
+	<span class="nt">&lt;RelativeLayout</span> <span class="na">xmlns:android=</span><span class="s">"http://schemas.android.com/apk/res/android"</span>
+	    <span class="na">xmlns:tools=</span><span class="s">"http://schemas.android.com/tools"</span>
+	    <span class="na">xmlns:app=</span><span class="s">"http://schemas.android.com/apk/res-auto"</span>
+	    <span class="na">android:layout_width=</span><span class="s">"match_parent"</span>
+	    <span class="na">android:layout_height=</span><span class="s">"match_parent"</span> <span class="nt">&gt;</span>
+	    <span class="nt">&lt;com.codepath.example.customviewdemo.ShapeSelectorView</span>
+		   <span class="na">app:shapeColor=</span><span class="s">"#7f0000"</span>
+		   <span class="na">app:displayShapeName=</span><span class="s">"true"</span>
+		   <span class="na">android:id=</span><span class="s">"@+id/shapeSelector"</span>
+		   <span class="na">android:layout_width=</span><span class="s">"wrap_content"</span>
+		   <span class="na">android:layout_height=</span><span class="s">"wrap_content"</span>
+		   <span class="na">android:layout_above=</span><span class="s">"@+id/btnSelect"</span>
+		   <span class="na">android:layout_alignParentLeft=</span><span class="s">"true"</span>
+		   <span class="na">android:layout_below=</span><span class="s">"@+id/tvPrompt"</span> <span class="nt">/&gt;</span>
+	<span class="nt">&lt;/RelativeLayout&gt;</span>
+	</code></pre></figure>
+
+<p>###应用自定义属性</p>
+
+<p>在前面我们定义了shapeColor和displayShapeName两个属性值，我们需要提取这两个属性值来用在自定义的视图中，可以使用TypedArray和obtainStyledAttributes方法来完成，如下所示：</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java">	<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ShapeSelectorView</span> <span class="kd">extends</span> <span class="n">View</span> <span class="o">{</span>
+	  <span class="kd">private</span> <span class="kt">int</span> <span class="n">shapeColor</span><span class="o">;</span>
+	  <span class="kd">private</span> <span class="kt">boolean</span> <span class="n">displayShapeName</span><span class="o">;</span>
+
+	  <span class="kd">public</span> <span class="n">ShapeSelectorView</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">,</span> <span class="n">AttributeSet</span> <span class="n">attrs</span><span class="o">)</span> <span class="o">{</span>
+	    <span class="kd">super</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="n">attrs</span><span class="o">);</span>
+	    <span class="n">setupAttributes</span><span class="o">(</span><span class="n">attrs</span><span class="o">);</span>
+	  <span class="o">}</span>
+
+	  <span class="kd">private</span> <span class="kt">void</span> <span class="n">setupAttributes</span><span class="o">(</span><span class="n">AttributeSet</span> <span class="n">attrs</span><span class="o">)</span> <span class="o">{</span>
+	    <span class="c1">// Obtain a typed array of attributes</span>
+	    <span class="n">TypedArray</span> <span class="n">a</span> <span class="o">=</span> <span class="n">getContext</span><span class="o">().</span><span class="na">getTheme</span><span class="o">().</span><span class="na">obtainStyledAttributes</span><span class="o">(</span><span class="n">attrs</span><span class="o">,</span> <span class="n">R</span><span class="o">.</span><span class="na">styleable</span><span class="o">.</span><span class="na">ShapeSelectorView</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+	    <span class="c1">// Extract custom attributes into member variables</span>
+	    <span class="k">try</span> <span class="o">{</span>
+	      <span class="n">shapeColor</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="na">getColor</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">styleable</span><span class="o">.</span><span class="na">ShapeSelectorView_shapeColor</span><span class="o">,</span> <span class="n">Color</span><span class="o">.</span><span class="na">BLACK</span><span class="o">);</span>
+	      <span class="n">displayShapeName</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="na">getBoolean</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">styleable</span><span class="o">.</span><span class="na">ShapeSelectorView_displayShapeName</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+	    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+	      <span class="c1">// TypedArray objects are shared and must be recycled.</span>
+	      <span class="n">a</span><span class="o">.</span><span class="na">recycle</span><span class="o">();</span>
+	    <span class="o">}</span>
+	  <span class="o">}</span>
+	<span class="o">}</span>
+	</code></pre></figure>
+
+<p>接下来添加一些getter和setter方法：</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java">	<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ShapeSelectorView</span> <span class="kd">extends</span> <span class="n">View</span> <span class="o">{</span>
+	  <span class="c1">// ...</span>
+	  <span class="kd">public</span> <span class="kt">boolean</span> <span class="n">isDisplayingShapeName</span><span class="o">()</span> <span class="o">{</span>
+	    <span class="k">return</span> <span class="n">displayShapeName</span><span class="o">;</span>
+	  <span class="o">}</span>
+
+	  <span class="kd">public</span> <span class="kt">void</span> <span class="n">setDisplayingShapeName</span><span class="o">(</span><span class="kt">boolean</span> <span class="n">state</span><span class="o">)</span> <span class="o">{</span>
+	    <span class="k">this</span><span class="o">.</span><span class="na">displayShapeName</span> <span class="o">=</span> <span class="n">state</span><span class="o">;</span>
+	    <span class="n">invalidate</span><span class="o">();</span>
+	    <span class="n">requestLayout</span><span class="o">();</span>
+	  <span class="o">}</span>
+
+	  <span class="kd">public</span> <span class="kt">int</span> <span class="n">getShapeColor</span><span class="o">()</span> <span class="o">{</span>
+	    <span class="k">return</span> <span class="n">shapeColor</span><span class="o">;</span>
+	  <span class="o">}</span>
+
+	  <span class="kd">public</span> <span class="kt">void</span> <span class="n">setShapeColor</span><span class="o">(</span><span class="kt">int</span> <span class="n">color</span><span class="o">)</span> <span class="o">{</span>
+	    <span class="k">this</span><span class="o">.</span><span class="na">shapeColor</span> <span class="o">=</span> <span class="n">color</span><span class="o">;</span>
+	    <span class="n">invalidate</span><span class="o">();</span>
+	    <span class="n">requestLayout</span><span class="o">();</span>
+	  <span class="o">}</span>
+	<span class="o">}</span>
+	</code></pre></figure>
+
+<p>当视图属性发生改变的时候可能需要重新绘图，你需要调用invalidate()和requestLayout()来刷新显示。</p>
+
+<p>###画图</p>
+
+<p>假设我们要使用前面的属性画一个长方形，所有的绘图都是在onDraw方法里执行，使用Canvas对象来绘图，如下所示：</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java">	<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ShapeSelectorView</span> <span class="kd">extends</span> <span class="n">View</span> <span class="o">{</span>
+	  <span class="c1">// ...</span>
+	  <span class="kd">private</span> <span class="kt">int</span> <span class="n">shapeWidth</span> <span class="o">=</span> <span class="mi">100</span><span class="o">;</span>
+	  <span class="kd">private</span> <span class="kt">int</span> <span class="n">shapeHeight</span> <span class="o">=</span> <span class="mi">100</span><span class="o">;</span>
+	  <span class="kd">private</span> <span class="kt">int</span> <span class="n">textXOffset</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+	  <span class="kd">private</span> <span class="kt">int</span> <span class="n">textYOffset</span> <span class="o">=</span> <span class="mi">30</span><span class="o">;</span>
+	  <span class="kd">private</span> <span class="n">Paint</span> <span class="n">paintShape</span><span class="o">;</span>
+
+	  <span class="c1">// ...</span>
+	  <span class="kd">public</span> <span class="n">ShapeSelectorView</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">,</span> <span class="n">AttributeSet</span> <span class="n">attrs</span><span class="o">)</span> <span class="o">{</span>
+	    <span class="kd">super</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="n">attrs</span><span class="o">);</span>
+	    <span class="n">setupAttributes</span><span class="o">(</span><span class="n">attrs</span><span class="o">);</span>
+	    <span class="n">setupPaint</span><span class="o">();</span>
+	  <span class="o">}</span>
+
+	  <span class="nd">@Override</span>
+	  <span class="kd">protected</span> <span class="kt">void</span> <span class="n">onDraw</span><span class="o">(</span><span class="n">Canvas</span> <span class="n">canvas</span><span class="o">)</span> <span class="o">{</span>
+	    <span class="kd">super</span><span class="o">.</span><span class="na">onDraw</span><span class="o">(</span><span class="n">canvas</span><span class="o">);</span>
+	    <span class="n">canvas</span><span class="o">.</span><span class="na">drawRect</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">shapeWidth</span><span class="o">,</span> <span class="n">shapeHeight</span><span class="o">,</span> <span class="n">paintShape</span><span class="o">);</span>
+	    <span class="k">if</span> <span class="o">(</span><span class="n">displayShapeName</span><span class="o">)</span> <span class="o">{</span>
+	      <span class="n">canvas</span><span class="o">.</span><span class="na">drawText</span><span class="o">(</span><span class="s">"Square"</span><span class="o">,</span> <span class="n">shapeWidth</span> <span class="o">+</span> <span class="n">textXOffset</span><span class="o">,</span> <span class="n">shapeHeight</span> <span class="o">+</span> <span class="n">textXOffset</span><span class="o">,</span> <span class="n">paintShape</span><span class="o">);</span>
+	    <span class="o">}</span>
+	  <span class="o">}</span>
+
+	  <span class="kd">private</span> <span class="kt">void</span> <span class="n">setupPaint</span><span class="o">()</span> <span class="o">{</span> 
+	      <span class="n">paintShape</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Paint</span><span class="o">();</span>
+	      <span class="n">paintShape</span><span class="o">.</span><span class="na">setStyle</span><span class="o">(</span><span class="n">Style</span><span class="o">.</span><span class="na">FILL</span><span class="o">);</span>
+	      <span class="n">paintShape</span><span class="o">.</span><span class="na">setColor</span><span class="o">(</span><span class="n">shapeColor</span><span class="o">);</span>
+	      <span class="n">paintShape</span><span class="o">.</span><span class="na">setTextSize</span><span class="o">(</span><span class="mi">30</span><span class="o">);</span>
+	   <span class="o">}</span>
+	<span class="o">}</span>
+	</code></pre></figure>
+
+<p>这段代码就会根据XML里设置的shapeColor来画图，根据displayShapeName属性来决定是否显示图形的名称，结果如下图：</p>
+
+<p><img src="/images/dag49.png" alt="" /></p>
+
+<p>更多画图的教程可以参考这里<a href="http://developer.android.com/guide/topics/graphics/2d-graphics.html"> Custom 2D Drawing Tutorial</a></p>
+
+<p>###计算尺寸</p>
+
+<p>为了更好的理解自定义视图的宽度和高度，我们需要定义onMeasure方法，这个方法根据视图的内容来决定它的宽度和高度，在这里宽度和高度是由形状和下面的文本决定的，如下所示：</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java">	<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ShapeSelectorView</span> <span class="kd">extends</span> <span class="n">View</span> <span class="o">{</span>
+	  <span class="nd">@Override</span>
+	  <span class="kd">protected</span> <span class="kt">void</span> <span class="n">onMeasure</span><span class="o">(</span><span class="kt">int</span> <span class="n">widthMeasureSpec</span><span class="o">,</span> <span class="kt">int</span> <span class="n">heightMeasureSpec</span><span class="o">)</span> <span class="o">{</span>
+	    <span class="c1">// Defines the extra padding for the shape name text</span>
+	    <span class="kt">int</span> <span class="n">textPadding</span> <span class="o">=</span> <span class="mi">10</span><span class="o">;</span>
+	    <span class="kt">int</span> <span class="n">contentWidth</span> <span class="o">=</span> <span class="n">shapeWidth</span><span class="o">;</span>
+	    
+	    <span class="c1">// Resolve the width based on our minimum and the measure spec</span>
+	    <span class="kt">int</span> <span class="n">minw</span> <span class="o">=</span> <span class="n">contentWidth</span> <span class="o">+</span> <span class="n">getPaddingLeft</span><span class="o">()</span> <span class="o">+</span> <span class="n">getPaddingRight</span><span class="o">();</span>
+	    <span class="kt">int</span> <span class="n">w</span> <span class="o">=</span> <span class="n">resolveSizeAndState</span><span class="o">(</span><span class="n">minw</span><span class="o">,</span> <span class="n">widthMeasureSpec</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+	    
+	    <span class="c1">// Ask for a height that would let the view get as big as it can</span>
+	    <span class="kt">int</span> <span class="n">minh</span> <span class="o">=</span> <span class="n">shapeHeight</span> <span class="o">+</span> <span class="n">getPaddingBottom</span><span class="o">()</span> <span class="o">+</span> <span class="n">getPaddingTop</span><span class="o">();</span>
+	    <span class="k">if</span> <span class="o">(</span><span class="n">displayShapeName</span><span class="o">)</span> <span class="o">{</span> 
+		<span class="n">minh</span> <span class="o">+=</span> <span class="n">textYOffset</span> <span class="o">+</span> <span class="n">textPadding</span><span class="o">;</span>
+	    <span class="o">}</span>
+	    <span class="kt">int</span> <span class="n">h</span> <span class="o">=</span> <span class="n">resolveSizeAndState</span><span class="o">(</span><span class="n">minh</span><span class="o">,</span> <span class="n">heightMeasureSpec</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+	    
+	    <span class="c1">// Calling this method determines the measured width and height</span>
+	    <span class="c1">// Retrieve with getMeasuredWidth or getMeasuredHeight methods later</span>
+	    <span class="n">setMeasuredDimension</span><span class="o">(</span><span class="n">w</span><span class="o">,</span> <span class="n">h</span><span class="o">);</span>
+	  <span class="o">}</span>
+	<span class="o">}</span>
+	</code></pre></figure>
+
+<p>宽度和高度都是基于MeasureSpec来讨论的，一个MeasureSpec封装了父布局传递给子布局的布局要求，每个MeasureSpec代表了一组宽度和高度的要求。一个MeasureSpec由大小和模式组成。它有三种模式：UNSPECIFIED(未指定),父元素未给子元素施加任何束缚，子元素可以得到任意想要的大小；EXACTLY(完全)，父元素决定子元素的确切大小，子元素将被限定在给定的边界里而忽略它本身大小；AT_MOST(至多)，子元素至多达到指定大小的值。resolveSizeAndState()方法根据视图想要的大小和MeasureSpec返回一个合适的值，最后你需要调用setMeasureDimension()方法生效。</p>
+
+<p>###不同形状之间切换</p>
+
+<p>如果想实现用户点击之后改变形状，需要在onTouchEvent方法里添加自定义逻辑：</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java">	<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ShapeSelectorView</span> <span class="kd">extends</span> <span class="n">View</span> <span class="o">{</span>
+	  <span class="c1">// ...</span>
+	  <span class="kd">private</span> <span class="n">String</span><span class="o">[]</span> <span class="n">shapeValues</span> <span class="o">=</span> <span class="o">{</span> <span class="s">"square"</span><span class="o">,</span> <span class="s">"circle"</span><span class="o">,</span> <span class="s">"triangle"</span> <span class="o">};</span>
+	  <span class="kd">private</span> <span class="kt">int</span> <span class="n">currentShapeIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+
+	  <span class="c1">// Change the currentShapeIndex whenever the shape is clicked</span>
+	  <span class="nd">@Override</span>
+	  <span class="kd">public</span> <span class="kt">boolean</span> <span class="n">onTouchEvent</span><span class="o">(</span><span class="n">MotionEvent</span> <span class="n">event</span><span class="o">)</span> <span class="o">{</span>
+	    <span class="kt">boolean</span> <span class="n">result</span> <span class="o">=</span> <span class="kd">super</span><span class="o">.</span><span class="na">onTouchEvent</span><span class="o">(</span><span class="n">event</span><span class="o">);</span>
+	    <span class="k">if</span> <span class="o">(</span><span class="n">event</span><span class="o">.</span><span class="na">getAction</span><span class="o">()</span> <span class="o">==</span> <span class="n">MotionEvent</span><span class="o">.</span><span class="na">ACTION_DOWN</span><span class="o">)</span> <span class="o">{</span>
+	      <span class="n">currentShapeIndex</span> <span class="o">++;</span>
+	      <span class="k">if</span> <span class="o">(</span><span class="n">currentShapeIndex</span> <span class="o">&gt;</span> <span class="o">(</span><span class="n">shapeValues</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span> <span class="mi">1</span><span class="o">))</span> <span class="o">{</span>
+		<span class="n">currentShapeIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+	      <span class="o">}</span>
+	      <span class="n">postInvalidate</span><span class="o">();</span>
+	      <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+	    <span class="o">}</span>
+	    <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+	  <span class="o">}</span>
+	<span class="o">}</span>
+	</code></pre></figure>
+
+<p>现在不管什么时候视图被单击，选择的形状的下标会改变，调用postInvalisate()方法后会显示一个不同的形状，接下来更新onDraw()方法来实现更改形状的逻辑：</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java">	<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ShapeSelectorView</span> <span class="kd">extends</span> <span class="n">View</span> <span class="o">{</span>
+	  <span class="c1">// ...</span>
+
+	  <span class="nd">@Override</span>
+	  <span class="kd">protected</span> <span class="kt">void</span> <span class="n">onDraw</span><span class="o">(</span><span class="n">Canvas</span> <span class="n">canvas</span><span class="o">)</span> <span class="o">{</span>
+	    <span class="kd">super</span><span class="o">.</span><span class="na">onDraw</span><span class="o">(</span><span class="n">canvas</span><span class="o">);</span>
+	    <span class="n">String</span> <span class="n">shapeSelected</span> <span class="o">=</span> <span class="n">shapeValues</span><span class="o">[</span><span class="n">currentShapeIndex</span><span class="o">];</span>
+	    <span class="k">if</span> <span class="o">(</span><span class="n">shapeSelected</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="s">"square"</span><span class="o">))</span> <span class="o">{</span>
+	      <span class="n">canvas</span><span class="o">.</span><span class="na">drawRect</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">shapeWidth</span><span class="o">,</span> <span class="n">shapeHeight</span><span class="o">,</span> <span class="n">paintShape</span><span class="o">);</span>
+	      <span class="n">textXOffset</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+	    <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">shapeSelected</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="s">"circle"</span><span class="o">))</span> <span class="o">{</span>
+	      <span class="n">canvas</span><span class="o">.</span><span class="na">drawCircle</span><span class="o">(</span><span class="n">shapeWidth</span> <span class="o">/</span> <span class="mi">2</span><span class="o">,</span> <span class="n">shapeHeight</span> <span class="o">/</span> <span class="mi">2</span><span class="o">,</span> <span class="n">shapeWidth</span> <span class="o">/</span> <span class="mi">2</span><span class="o">,</span> <span class="n">paintShape</span><span class="o">);</span>
+	      <span class="n">textXOffset</span> <span class="o">=</span> <span class="mi">12</span><span class="o">;</span>
+	    <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">shapeSelected</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="s">"triangle"</span><span class="o">))</span> <span class="o">{</span>
+	      <span class="n">canvas</span><span class="o">.</span><span class="na">drawPath</span><span class="o">(</span><span class="n">getTrianglePath</span><span class="o">(),</span> <span class="n">paintShape</span><span class="o">);</span>
+	      <span class="n">textXOffset</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+	    <span class="o">}</span>
+	    <span class="k">if</span> <span class="o">(</span><span class="n">displayShapeName</span><span class="o">)</span> <span class="o">{</span>
+	      <span class="n">canvas</span><span class="o">.</span><span class="na">drawText</span><span class="o">(</span><span class="n">shapeSelected</span><span class="o">,</span> <span class="mi">0</span> <span class="o">+</span> <span class="n">textXOffset</span><span class="o">,</span> <span class="n">shapeHeight</span> <span class="o">+</span> <span class="n">textYOffset</span><span class="o">,</span> <span class="n">paintShape</span><span class="o">);</span>
+	    <span class="o">}</span>
+	  <span class="o">}</span>
+
+	  <span class="kd">protected</span> <span class="n">Path</span> <span class="n">getTrianglePath</span><span class="o">()</span> <span class="o">{</span>
+	    <span class="n">Point</span> <span class="n">p1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Point</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">shapeHeight</span><span class="o">),</span> <span class="n">p2</span> <span class="o">=</span> <span class="kc">null</span><span class="o">,</span> <span class="n">p3</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+	    <span class="n">p2</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Point</span><span class="o">(</span><span class="n">p1</span><span class="o">.</span><span class="na">x</span> <span class="o">+</span> <span class="n">shapeWidth</span><span class="o">,</span> <span class="n">p1</span><span class="o">.</span><span class="na">y</span><span class="o">);</span>
+	    <span class="n">p3</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Point</span><span class="o">(</span><span class="n">p1</span><span class="o">.</span><span class="na">x</span> <span class="o">+</span> <span class="o">(</span><span class="n">shapeWidth</span> <span class="o">/</span> <span class="mi">2</span><span class="o">),</span> <span class="n">p1</span><span class="o">.</span><span class="na">y</span> <span class="o">-</span> <span class="n">shapeHeight</span><span class="o">);</span>
+	    <span class="n">Path</span> <span class="n">path</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Path</span><span class="o">();</span>
+	    <span class="n">path</span><span class="o">.</span><span class="na">moveTo</span><span class="o">(</span><span class="n">p1</span><span class="o">.</span><span class="na">x</span><span class="o">,</span> <span class="n">p1</span><span class="o">.</span><span class="na">y</span><span class="o">);</span>
+	    <span class="n">path</span><span class="o">.</span><span class="na">lineTo</span><span class="o">(</span><span class="n">p2</span><span class="o">.</span><span class="na">x</span><span class="o">,</span> <span class="n">p2</span><span class="o">.</span><span class="na">y</span><span class="o">);</span>
+	    <span class="n">path</span><span class="o">.</span><span class="na">lineTo</span><span class="o">(</span><span class="n">p3</span><span class="o">.</span><span class="na">x</span><span class="o">,</span> <span class="n">p3</span><span class="o">.</span><span class="na">y</span><span class="o">);</span>
+	    <span class="k">return</span> <span class="n">path</span><span class="o">;</span>
+	  <span class="o">}</span>
+
+	  <span class="c1">// ...</span>
+	<span class="o">}</span>
+	</code></pre></figure>
+
+<p>现在每次点击都会显示一个不同的形状，结果如下：</p>
+
+<p><img src="/images/dag50.png" alt="" /></p>
+
+<p>接下来添加一个获取形状的方法：</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java">	<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ShapeSelectorView</span> <span class="kd">extends</span> <span class="n">View</span> <span class="o">{</span>
+	  <span class="c1">// ...</span>
+	  <span class="c1">// Returns selected shape name</span>
+	  <span class="kd">public</span> <span class="n">String</span> <span class="n">getSelectedShape</span><span class="o">()</span> <span class="o">{</span>
+	    <span class="k">return</span> <span class="n">shapeValues</span><span class="o">[</span><span class="n">currentShapeIndex</span><span class="o">];</span>
+	  <span class="o">}</span>
+	<span class="o">}</span>
+	</code></pre></figure>
+
+<p>###保存视图的状态</p>
+
+<p>当配置发生改变的时候(比如屏幕旋转)视图需要保存它们的状态，你可以实现onSaveInstanceState()和onRestoreInstanceState()方法来保存和恢复视图状态，如下所示：</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java">	<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ShapeSelectorView</span> <span class="kd">extends</span> <span class="n">View</span> <span class="o">{</span>
+	  <span class="c1">// This is the view state for this shape selector</span>
+	  <span class="kd">private</span> <span class="kt">int</span> <span class="n">currentShapeIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+
+	  <span class="nd">@Override</span>
+	  <span class="kd">public</span> <span class="n">Parcelable</span> <span class="n">onSaveInstanceState</span><span class="o">()</span> <span class="o">{</span>
+	    <span class="c1">// Construct bundle</span>
+	    <span class="n">Bundle</span> <span class="n">bundle</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Bundle</span><span class="o">();</span>
+	    <span class="c1">// Store base view state</span>
+	    <span class="n">bundle</span><span class="o">.</span><span class="na">putParcelable</span><span class="o">(</span><span class="s">"instanceState"</span><span class="o">,</span> <span class="kd">super</span><span class="o">.</span><span class="na">onSaveInstanceState</span><span class="o">());</span>
+	    <span class="c1">// Save our custom view state to bundle</span>
+	    <span class="n">bundle</span><span class="o">.</span><span class="na">putInt</span><span class="o">(</span><span class="s">"currentShapeIndex"</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">currentShapeIndex</span><span class="o">);</span>
+	    <span class="c1">// ... store any other custom state here ...</span>
+	    <span class="c1">// Return the bundle</span>
+	    <span class="k">return</span> <span class="n">bundle</span><span class="o">;</span>
+	  <span class="o">}</span>
+
+	  <span class="nd">@Override</span>
+	  <span class="kd">public</span> <span class="kt">void</span> <span class="n">onRestoreInstanceState</span><span class="o">(</span><span class="n">Parcelable</span> <span class="n">state</span><span class="o">)</span> <span class="o">{</span>
+	    <span class="c1">// Checks if the state is the bundle we saved</span>
+	    <span class="k">if</span> <span class="o">(</span><span class="n">state</span> <span class="k">instanceof</span> <span class="n">Bundle</span><span class="o">)</span> <span class="o">{</span>
+	      <span class="n">Bundle</span> <span class="n">bundle</span> <span class="o">=</span> <span class="o">(</span><span class="n">Bundle</span><span class="o">)</span> <span class="n">state</span><span class="o">;</span>
+	      <span class="c1">// Load back our custom view state</span>
+	      <span class="k">this</span><span class="o">.</span><span class="na">currentShapeIndex</span> <span class="o">=</span> <span class="n">bundle</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span><span class="s">"currentShapeIndex"</span><span class="o">);</span>
+	      <span class="c1">// ... load any other custom state here ...</span>
+	      <span class="c1">// Load base view state back</span>
+	      <span class="n">state</span> <span class="o">=</span> <span class="n">bundle</span><span class="o">.</span><span class="na">getParcelable</span><span class="o">(</span><span class="s">"instanceState"</span><span class="o">);</span>
+	    <span class="o">}</span>
+	    <span class="c1">// Pass base view state on to super</span>
+	    <span class="kd">super</span><span class="o">.</span><span class="na">onRestoreInstanceState</span><span class="o">(</span><span class="n">state</span><span class="o">);</span>
+	  <span class="o">}</span>
+	<span class="o">}</span>
+	</code></pre></figure>
+
+<p>一旦你实现了这些保存和恢复的逻辑，当手机配置改变的时候你的视图能够自动保存状态。</p>
+

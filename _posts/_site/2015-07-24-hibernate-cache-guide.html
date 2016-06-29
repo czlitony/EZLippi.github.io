@@ -1,0 +1,132 @@
+<p>Hibernate中提供了两级Cache，第一级别的缓存是Session级别的缓存，这一级别的缓存由hibernate管理的，一般情况下无需进行干预；第二级别的缓存是SessionFactory级别的缓存，它是属于进程范围或群集范围的缓存,这一级别的缓存可以进行配置和更改，并且可以动态加载和卸载。 Hibernate还为查询结果提供了一个查询缓存，它依赖于第二级缓存。</p>
+
+<p><strong>一级缓存和二级缓存的要点</strong></p>
+
+<p><img src="/images/hibernate1.png" alt="" />
+<img src="/images/hibernate2.png" alt="" />
+<img src="/images/hibernate3.png" alt="" /></p>
+
+<p><strong>使用二级缓存</strong></p>
+
+<p>这里以EhCache作为二级缓存的插件为例介绍Hibernate二级缓存的配置。</p>
+
+<p>（1）打开二级缓存：</p>
+
+<p>为Hibernate配置二级缓存：</p>
+
+<p>在主配置文件中hibernate.cfg.xml ：</p>
+
+<p>Hibernate3.3以上：</p>
+
+<figure class="highlight"><pre><code class="language-xml" data-lang="xml">	<span class="nt">&lt;property</span> 	<span class="na">name=</span><span class="s">"hibernate.cache.region.factory_class"</span><span class="nt">&gt;</span>net.sf.ehcache.hibernate.EhCacheRegionFactory<span class="nt">&lt;/property&gt;</span>
+	</code></pre></figure>
+
+<p>Hibernate4.0以上,使用<code class="highlighter-rouge">org.hibernate.cache.ehcache.EhCacheRegionFactory </code>代替<code class="highlighter-rouge">net.sf.ehcache.hibernate.EhCacheRegionFactory</code></p>
+
+<figure class="highlight"><pre><code class="language-xml" data-lang="xml">	<span class="c">&lt;!--二级缓存--&gt;</span>
+	<span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"hibernate.cache.use_second_level_cache"</span><span class="nt">&gt;</span>true<span class="nt">&lt;/property&gt;</span>
+	<span class="c">&lt;!--查询缓存--&gt;</span>
+	<span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"hibernate.cache.use_query_cache"</span><span class="nt">&gt;</span>true<span class="nt">&lt;/property&gt;</span>
+	在查询定义的地方加入setCacheable(true)，这次查询就被缓存起来了 
+	</code></pre></figure>
+
+<p>（2）配置ehcache.xml</p>
+
+<figure class="highlight"><pre><code class="language-xml" data-lang="xml">	<span class="nt">&lt;ehcache&gt;</span>
+	<span class="c">&lt;!--缓存到硬盘的路径--&gt;</span>
+	<span class="nt">&lt;diskStore</span> <span class="na">path=</span><span class="s">"/home/lippi/ehcache"</span><span class="nt">/&gt;</span>
+	<span class="nt">&lt;defaultCache</span>
+	<span class="na">maxElementsInMemory=</span><span class="s">"200"</span><span class="err">&lt;!--</span> <span class="err">最多缓存多少个对象</span> <span class="err">--</span><span class="nt">&gt;</span>
+	eternal="false"<span class="c">&lt;!-- 内存中的对象是否永远不变 --&gt;</span>
+	timeToIdleSeconds="50"<span class="c">&lt;!--空闲了多长时间，超过这个时间清除 --&gt;</span>
+	timeToLiveSeconds="60"<span class="c">&lt;!--总共存活时间 --&gt;</span>
+	overflowToDisk="true"<span class="c">&lt;!--内存中溢出就放到硬盘上 --&gt;</span>
+	/&gt;
+
+	<span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"org.hibernate.cache.spi.UpdateTimestampsCache"</span>  
+           <span class="na">maxElementsInMemory=</span><span class="s">"5000"</span>   
+           <span class="na">eternal=</span><span class="s">"true"</span>   
+           <span class="na">overflowToDisk=</span><span class="s">"true"</span> <span class="nt">/&gt;</span>  
+	<span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"org.hibernate.cache.internal.StandardQueryCache"</span>  
+           <span class="na">maxElementsInMemory=</span><span class="s">"10000"</span>   
+           <span class="na">eternal=</span><span class="s">"false"</span>   
+           <span class="na">timeToLiveSeconds=</span><span class="s">"120"</span>  
+           <span class="na">overflowToDisk=</span><span class="s">"true"</span> <span class="nt">/&gt;</span> 
+	<span class="c">&lt;!--
+	java文件注解查找cache方法名的策略：如果不指定java文件注解中的	region="ehcache.xml中的name的属性值", 则使用name名为全限定包名, 如果不存在与类名匹配的cache名称, 则用 defaultCache，如果类中包含set集合, 则需要另行指定其cache指定缓存的对象，缓存哪一个实体类，下面出现的的属性覆盖上面出现的，没出现的继承上面的。
+	--&gt;</span>
+	<span class="nt">&lt;cache</span> <span class="na">name=</span><span class="s">"com.lippi.hibernate.pojos.Order"</span>
+	<span class="na">maxElementsInMemory=</span><span class="s">"200"</span>
+	<span class="na">eternal=</span><span class="s">"true"</span>
+	<span class="na">timeToIdleSeconds=</span><span class="s">"0"</span>
+	<span class="na">timeToLiveSeconds=</span><span class="s">"0"</span>
+	<span class="na">overflowToDisk=</span><span class="s">"false"</span>
+	<span class="nt">/&gt;</span>
+	<span class="nt">&lt;/ehcache&gt;</span>
+	</code></pre></figure>
+
+<p>（3）使用二级缓存需要在实体类中加入注解：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+</code></pre>
+</div>
+
+<p>Load默认使用二级缓存，就是当查一个对象的时候，它先会去二级缓存里面去找，如果找到了就不去数据库中查了。</p>
+
+<p>Iterator默认的也会使用二级缓存，有的话就不去数据库里面查了，不发送select语句了。</p>
+
+<p>List默认的往二级缓存中加数据，假如有一个query，把数据拿出来之后会放到二级缓存，但是执行查询的时候不会到二级缓存中查，会在数据库中查。原因每个query中查询条件不一样。</p>
+
+<p>（4）也可以在需要被缓存的对象中hbm文件中的<class>标签下添加一个<cache>子标签:</cache></class></p>
+
+<figure class="highlight"><pre><code class="language-xml" data-lang="xml">	<span class="nt">&lt;hibernate-mapping&gt;</span>
+	<span class="nt">&lt;class</span> <span class="na">name=</span><span class="s">"com.lippi.hibernate.pojos.Order"</span> <span class="na">table=</span><span class="s">"Orders"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;cache</span> <span class="na">usage=</span><span class="s">"read-only"</span><span class="nt">/&gt;</span>
+	<span class="nt">&lt;id</span> <span class="na">name=</span><span class="s">"id"</span> <span class="na">type=</span><span class="s">"string"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;column</span> <span class="na">name=</span><span class="s">"id"</span><span class="nt">&gt;&lt;/column&gt;</span>
+	<span class="nt">&lt;generator</span> <span class="na">class=</span><span class="s">"uuid"</span><span class="nt">&gt;&lt;/generator&gt;</span>
+	<span class="nt">&lt;/id&gt;</span>
+	<span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"orderNumber"</span> <span class="na">column=</span><span class="s">"orderNumber"</span> <span class="na">type=</span><span class="s">"string"</span><span class="nt">&gt;&lt;/property&gt;</span>
+	<span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"cost"</span> <span class="na">column=</span><span class="s">"cost"</span> <span class="na">type=</span><span class="s">"integer"</span><span class="nt">&gt;&lt;/property&gt;</span>
+	<span class="nt">&lt;many-to-one</span> <span class="na">name=</span><span class="s">"customer"</span> <span class="na">class=</span><span class="s">"com.lippi.hibernate.pojos.Customer"</span>
+	<span class="na">column=</span><span class="s">"customer_id"</span> <span class="na">cascade=</span><span class="s">"save-update"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;/many-to-one&gt;</span>
+	<span class="nt">&lt;/class&gt;</span>
+	<span class="nt">&lt;/hibernate-mapping&gt;</span>
+	</code></pre></figure>
+
+<p>存在一对多的关系，想要在在获取一方的时候将关联的多方缓存起来，需要在集合属性下添加<cache>子标签，这里需要将关联的对象的hbm文件中必须在存在<class>标签下也添加<cache>标签，不然Hibernate只会缓存OID。</cache></class></cache></p>
+
+<figure class="highlight"><pre><code class="language-xml" data-lang="xml">	<span class="nt">&lt;hibernate-mapping&gt;</span>
+	<span class="nt">&lt;class</span> <span class="na">name=</span><span class="s">"com.lippi.hibernate.pojos.Customer"</span> <span class="na">table=</span><span class="s">"customer"</span><span class="nt">&gt;</span>
+	<span class="c">&lt;!-- 主键设置--&gt;</span>
+	<span class="nt">&lt;id</span> <span class="na">name=</span><span class="s">"id"</span> <span class="na">type=</span><span class="s">"string"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;column</span> <span class="na">name=</span><span class="s">"id"</span><span class="nt">&gt;&lt;/column&gt;</span>
+	<span class="nt">&lt;generator</span> <span class="na">class=</span><span class="s">"uuid"</span><span class="nt">&gt;&lt;/generator&gt;</span>
+	<span class="nt">&lt;/id&gt;</span>
+	<span class="c">&lt;!-- 属性设置--&gt;</span>
+	<span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"username"</span> <span class="na">column=</span><span class="s">"username"</span> <span class="na">type=</span><span class="s">"string"</span><span class="nt">&gt;&lt;/property&gt;</span>
+	<span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"balance"</span> <span class="na">column=</span><span class="s">"balance"</span> <span class="na">type=</span><span class="s">"integer"</span><span class="nt">&gt;&lt;/property&gt;</span>
+	<span class="nt">&lt;set</span> <span class="na">name=</span><span class="s">"orders"</span> <span class="na">inverse=</span><span class="s">"true"</span> <span class="na">cascade=</span><span class="s">"all"</span> <span class="na">lazy=</span><span class="s">"false"</span> <span class="na">fetch=</span><span class="s">"join"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;cache</span> <span class="na">usage=</span><span class="s">"read-only"</span><span class="nt">/&gt;</span>
+	<span class="nt">&lt;key</span> <span class="na">column=</span><span class="s">"customer_id"</span> <span class="nt">&gt;&lt;/key&gt;</span>
+	<span class="nt">&lt;one-to-many</span> <span class="na">class=</span><span class="s">"com.lippi.hibernate.pojos.Order"</span><span class="nt">/&gt;</span>
+	<span class="nt">&lt;/set&gt;</span>
+	<span class="nt">&lt;/class&gt;</span>
+	<span class="nt">&lt;/hibernate-mapping&gt;</span>
+	</code></pre></figure>
+
+<p>(5)在hibernate.cfg.xml中配置ehcache.xml文件的位置</p>
+
+<figure class="highlight"><pre><code class="language-xml" data-lang="xml">	<span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"cache.provider_configuration_file_resource_path"</span><span class="nt">&gt;</span>config/hibernate/ehcache/ehcache.xml<span class="nt">&lt;/property&gt;</span>
+	</code></pre></figure>
+
+<p>(6)和Spring集成</p>
+
+<p>在Spring集成Hibernate配置中，添加如下属性:</p>
+
+<figure class="highlight"><pre><code class="language-xml" data-lang="xml">	<span class="nt">&lt;prop</span> <span class="na">key=</span><span class="s">"hibernate.cache.use_second_level_cache"</span><span class="nt">&gt;</span>true<span class="nt">&lt;/prop&gt;</span>
+	<span class="nt">&lt;prop</span> <span class="na">key=</span><span class="s">"hibernate.cache.use_query_cache"</span><span class="nt">&gt;</span>true<span class="nt">&lt;/prop&gt;</span>
+	<span class="nt">&lt;prop</span> <span class="na">key=</span><span class="s">"hibernate.cache.region.factory_class"</span><span class="nt">&gt;</span>net.sf.ehcache.hibernate.EhCacheRegionFactory<span class="nt">&lt;/prop&gt;</span>
+	</code></pre></figure>
+
