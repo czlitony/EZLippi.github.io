@@ -7,16 +7,14 @@ title: "关于：About"
 
 * Li Chengzhi
 * Programming enthusiasts
-* Suqian, Jiansu.
+* Suqian, Jiangsu.
 
 ## Contact
 
-<p class="contact">
 * QQ:      1271673214
 * WeChat:  lichengzhi000
 * Email:   czli.tony@gmail.com
 * Address: Shanghai, China
-</p>
 
 ## About This Page
 
