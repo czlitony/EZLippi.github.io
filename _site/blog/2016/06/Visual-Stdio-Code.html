@@ -6,9 +6,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Zsh-Linux下最好的Shell简介 - CzliTony's Blog - czli.tony(czli.tony@gmail.com)">
+    <meta name="description" content="VSC keyboard shortcuts - CzliTony's Blog - czli.tony(czli.tony@gmail.com)">
     <title>
-      Zsh-Linux下最好的Shell简介 - CzliTony's Blog
+      VSC keyboard shortcuts - CzliTony's Blog
     </title>
     <!-- Bootstrap Core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -115,88 +115,73 @@
         	<div class="all-posts" post-cate="All">
  		<header>
 		<h1>
-		  Zsh-Linux下最好的Shell简介
-		  <div class="post-date"><a href="https://github.com/czlitony/czlitony.github.io/edit/master/_posts/2015-08-23-linux-zsh.md" target="_blank">纠错</a>&nbsp;&nbsp;
+		  VSC keyboard shortcuts
+		  <div class="post-date"><a href="https://github.com/czlitony/czlitony.github.io/edit/master/_posts/2016-06-30-Visual-Stdio-Code.md" target="_blank">纠错</a>&nbsp;&nbsp;
 			<span class="glyphicon glyphicon-time"></span>
-			23 Aug 2015
+			30 Jun 2016
 		  </div>
 		</h1>
  		</header>
 		<!-- Author -->
 		<hr>
 		 <article>
-		<p>没听过Shell?Shell是Unix/Linux系统下的外壳，负责外界和Linux内核的交互，将用户输入的命令转换成内核能懂的语言，执行相应的指令，然后将输出返回给用户．</p>
+		<p><strong>Frequently used vsc keyboard shortcuts</strong></p>
 
-<p>###查看当前系统所有的Shell</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>ls /etc/shells
-</code></pre>
-</div>
-
-<p>结果如下：
-<img src="/images/zsh1.png" alt="" /></p>
-
-<p>###安装Zsh</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo apt-get install zsh
-</code></pre>
-</div>
-
-<p>简单吧？把它设置为默认Shell,<code class="highlighter-rouge">chsh -s /bin/zsh</code>
-它的默认配置为.zshrc,你可以在里面配置各种按键别名，你也可以使用Github上比较流行的oh-my-zsh配置，安装方法：</p>
-
-<p>自动安装：</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh
-</code></pre>
-</div>
-
-<p>手动安装：</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
-cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
-</code></pre>
-</div>
-
-<p>安装之后进入一个Git分支，显示是这样的，很炫对吧？</p>
-
-<p><img src="/images/zsh2.png" alt="" /></p>
-
-<p>以前切换工作目录一直按cd加tab是不是很麻烦，现在有了Zsh只需要输入d,他会显示最近使用的工作目录，然后输入数字进入对应的目录，是不是很省事？</p>
-
-<p><img src="/images/zsh3.png" alt="" /></p>
-
-<p>它的功能不局限如此，时间长了忘记了tar的参数？输入<code class="highlighter-rouge">tar -</code>按一下tab键会显示所有的命令行参数，再按一下tab进入选择模式，如图：</p>
-
-<p><img src="/images/zsh4.png" alt="" /></p>
-
-<p>以前杀死进程是不是用<code class="highlighter-rouge">ps aux | grep python</code>
-<img src="/images/zsh5.png" alt="" />
-现在只需要输入<code class="highlighter-rouge">kill python</code>再按一下tab键，结果变成这样了,神奇把？</p>
-
-<p><img src="/images/zsh6.png" alt="" /></p>
-
-<p>###插件</p>
-
-<p>在.zshrc文件里可以配置你要使用的插件，Zsh提供上千种插件，你可以配置自己Shell的主题，我用的是<code class="highlighter-rouge">ZSH_THEME=”robbyrussell”</code>,你还可以配置需要的插件，我的插件是<code class="highlighter-rouge">plugins=(git autojump mvn gradle)</code>,简单介绍下git和autojump:</p>
-
-<p>git. 当你进入一个git目录时，Zsh会显示git和所在的分支，对git的命令进行了简化，例如 gco=’git checkout’、gd=’git diff’、gst=’git status’、g=’git’等等，熟练使用可以大大减少 git 的命令长度，命令内容可以参考~/.oh-my-zsh/plugins/git/git.plugin.zsh</p>
-
-<p>autojump. 安装方法：</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>wget https://github.com/downloads/joelthelion/autojump/autojump_v21.1.2.tar.gz
-</code></pre>
-</div>
-
-<p>解压缩后进入目录，执行<code class="highlighter-rouge">./install.sh</code>,最后加上这一行代码到.zshrc中：</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>[[ -s ~/.autojump/etc/profile.d/autojump.sh ]] &amp;&amp; . ~/.autojump/etc/profile.d/autojump.sh
-</code></pre>
-</div>
-
-<p>安装了autojump之后，zsh 会自动记录你访问过的目录，通过 j + 目录名 可以直接进行目录跳转，而且目录名支持模糊匹配和自动补全，例如你访问过workspace目录，输入j work 即可正确跳转。j –stat 可以看你的历史路径库。</p>
-
-<p>你还可以参考<a href="https://github.com/robbyrussell/oh-my-zsh">Zsh</a></p>
+<ul>
+  <li>shift+ctrl+A 注释代码块</li>
+  <li>
+    <p>ctrl+/       注释</p>
+  </li>
+  <li>shift+ctrl+alt+[ 整个文件函数折叠</li>
+  <li>shift+ctrl+alt+] 整个文件函数展开</li>
+  <li>shift+ctrl+[ 单个函数折叠</li>
+  <li>
+    <p>shift+ctrl+] 单个函数展开</p>
+  </li>
+  <li>ctrl+[ 缩进</li>
+  <li>
+    <p>Ctrl+] 后退</p>
+  </li>
+  <li>Ctrl+I       选中一行</li>
+  <li>shift+ctrl+K 删除一行</li>
+  <li>
+    <p>ctrl+Enter   在当前行后插入一行</p>
+  </li>
+  <li>Ctrl+P       搜索最近打开的文档 alt+tab可以选择</li>
+  <li>Ctrl+T       在当前文件里查找符号</li>
+  <li>
+    <p>shift+ctrl+O 在工作空间里查找符号</p>
+  </li>
+  <li>
+    <p>按住Ctrl, 单击导航栏的文件名会显示在右侧</p>
+  </li>
+  <li>Ctrl+Down  鼠标位置不变，文件下移</li>
+  <li>
+    <p>Ctrl+Up	   鼠标位置不变，文件上移</p>
+  </li>
+  <li>F3	   向后查找</li>
+  <li>
+    <p>Shift+F3   向前查找</p>
+  </li>
+  <li>
+    <p>F1   显示所有命令</p>
+  </li>
+  <li>ctrl+click或F12 转到定义</li>
+  <li>ctrl+hover      显示定义或声明</li>
+  <li>
+    <p>shift+alt+F10   快速显示定义</p>
+  </li>
+  <li>ctrl+F2      高亮所有选中的单词</li>
+  <li>
+    <p>shift+ctrl+L 高亮所有选中的内容</p>
+  </li>
+  <li>
+    <p>shift+alt   multi select</p>
+  </li>
+  <li>自定义：</li>
+  <li>ctrl+left  后退</li>
+  <li>ctrl+right 前进</li>
+</ul>
 
 		  </article>
 		<hr>
@@ -210,16 +195,16 @@ cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
 	  
 	  <span class="next">
 	    上篇：
-	    <a href="/blog/2015/04/web-transmission-basis.html">
-	      网络传输基础
+	    <a href="/blog/2016/02/git-guide.html">
+	      Git操作手册|命令速查表
 	    </a>
 	  </span>
 	   
 	  
 	  <span class="prev">
 	    下篇：
-	    <a href="/blog/2016/02/baidu-spider-forbidden.html">
-	      解决百度爬虫无法抓取github pages
+	    <a href="/blog/2016/06/cmd-markdown.html">
+	      Cmd Markdown
 	    </a>
 	  </span>
 	  
@@ -507,27 +492,9 @@ cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
               
                 
 		<li>
-                  <a href="/blog/2015/04/web-transmission-basis.html" class="post-list-item">
-                    <h2>网络传输基础</h2>
-                    <span class="date">Apr 16, 2015</span>
-                  </a>
-		</li>
-                
-              
-                
-		<li>
                   <a href="/blog/2014/11/web-server.html" class="post-list-item">
                     <h2>也谈如何构建高性能服务端程序</h2>
                     <span class="date">Nov 19, 2014</span>
-                  </a>
-		</li>
-                
-              
-                
-		<li>
-                  <a href="/blog/2014/10/androidDP-project.html" class="post-list-item">
-                    <h2>Androidpn 消息推送总结</h2>
-                    <span class="date">Oct 31, 2014</span>
                   </a>
 		</li>
                 
@@ -661,15 +628,6 @@ cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
 		</li>
                 
               
-                
-		<li>
-                  <a href="/blog/2015/08/linux-zsh.html" class="post-list-item">
-                    <h2>Zsh-Linux下最好的Shell简介</h2>
-                    <span class="date">Aug 23, 2015</span>
-                  </a>
-		</li>
-                
-              
             
           </ul>
 	</div>
@@ -687,27 +645,6 @@ cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
                   <a href="/blog/2016/02/git-guide.html" class="post-list-item">
                     <h2>Git操作手册|命令速查表</h2>
                     <span class="date">Feb 20, 2016</span>
-                  </a>
-		</li>
-                
-              
-            
-          </ul>
-	</div>
-        
-	<div post-cate="hi">
-          <ul class="posts">
-            
-              
-                
-              
-            
-              
-                
-		<li>
-                  <a href="/blog/2016/02/hi.html" class="post-list-item">
-                    <h2>hi</h2>
-                    <span class="date">Feb 22, 2016</span>
                   </a>
 		</li>
                 
@@ -773,7 +710,7 @@ UY END -->
 <!-- 多说评论框 start -->
   <div class="post-comment">
             <span>Comments</span>
-	<div class="ds-thread" data-thread-key="/blog/2015/08/linux-zsh" data-title="Zsh-Linux下最好的Shell简介" data-url="LippiOuYang.github.io/blog/2015/08/linux-zsh.html">
+	<div class="ds-thread" data-thread-key="/blog/2016/06/Visual-Stdio-Code" data-title="VSC keyboard shortcuts" data-url="LippiOuYang.github.io/blog/2016/06/Visual-Stdio-Code.html">
 	</div>
  </div>
 <!-- 多说评论框 end -->
@@ -839,7 +776,7 @@ var duoshuoQuery = {short_name:"lippiouyang"};
       </div>
       
       <a href="/index.html" class="categories-list-item" cate="All">
-        All<span class="my-badge"> 32</span>
+        All<span class="my-badge"> 28</span>
       </a>
       
         <a href="javascript:;" class="categories-list-item" cate="java">
@@ -867,7 +804,7 @@ var duoshuoQuery = {short_name:"lippiouyang"};
         </a>
       
         <a href="javascript:;" class="categories-list-item" cate="web">
-          web <span class="my-badge">6</span>
+          web <span class="my-badge">4</span>
         </a>
       
         <a href="javascript:;" class="categories-list-item" cate="book">
@@ -883,15 +820,11 @@ var duoshuoQuery = {short_name:"lippiouyang"};
         </a>
       
         <a href="javascript:;" class="categories-list-item" cate="Unix/Linux">
-          Unix/Linux <span class="my-badge">2</span>
+          Unix/Linux <span class="my-badge">1</span>
         </a>
       
         <a href="javascript:;" class="categories-list-item" cate="Git">
           Git <span class="my-badge">1</span>
-        </a>
-      
-        <a href="javascript:;" class="categories-list-item" cate="hi">
-          hi <span class="my-badge">1</span>
         </a>
       
         <a href="javascript:;" class="categories-list-item" cate="Visual Stdio Code">
