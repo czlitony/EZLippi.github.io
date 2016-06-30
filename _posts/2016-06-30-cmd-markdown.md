@@ -1,10 +1,10 @@
 ---
 layout: post
 title: Cmd Markdown
-description: Java编程中“为了性能”尽量要做到的一些地方
-keywords: java
-categories : [java]
-tags : [java, 性能]
+description: Cmd Markdown introduction
+keywords: markdown
+categories : [markdown]
+tags : [markdown]
 ---
 
 # 欢迎使用 Cmd Markdown 编辑阅读器

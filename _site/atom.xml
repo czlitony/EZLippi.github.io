@@ -4,7 +4,7 @@
  <title>CzliTony's Blog</title>
  <link href="http://http://coolshell.info/atom.xml" rel="self"/>
  <link href="http://http://coolshell.info"/>
- <updated>2016-06-30T10:10:33+08:00</updated>
+ <updated>2016-06-30T10:15:09+08:00</updated>
  <author>
    <name>czli.tony</name>
    <email>czli.tony@gmail.com</email>
@@ -6159,15 +6159,6 @@ jekyll最新的动态和文档现在可以在&lt;a href=&quot;http://jekyllrb.co
               
                 
 		&lt;li&gt;
-                  &lt;a href=&quot;/blog/2016/06/cmd-markdown.html&quot; class=&quot;post-list-item&quot;&gt;
-                    &lt;h2&gt;Cmd Markdown&lt;/h2&gt;
-                    &lt;span class=&quot;date&quot;&gt;Jun 30, 2016&lt;/span&gt;
-                  &lt;/a&gt;
-		&lt;/li&gt;
-                
-              
-                
-		&lt;li&gt;
                   &lt;a href=&quot;/blog/2015/08/volley-source-code.html&quot; class=&quot;post-list-item&quot;&gt;
                     &lt;h2&gt;Volley源码分析&lt;/h2&gt;
                     &lt;span class=&quot;date&quot;&gt;Aug 27, 2015&lt;/span&gt;
@@ -6998,6 +6989,27 @@ jekyll最新的动态和文档现在可以在&lt;a href=&quot;http://jekyllrb.co
           &lt;/ul&gt;
 	&lt;/div&gt;
         
+	&lt;div post-cate=&quot;markdown&quot;&gt;
+          &lt;ul class=&quot;posts&quot;&gt;
+            
+              
+                
+              
+            
+              
+                
+		&lt;li&gt;
+                  &lt;a href=&quot;/blog/2016/06/cmd-markdown.html&quot; class=&quot;post-list-item&quot;&gt;
+                    &lt;h2&gt;Cmd Markdown&lt;/h2&gt;
+                    &lt;span class=&quot;date&quot;&gt;Jun 30, 2016&lt;/span&gt;
+                  &lt;/a&gt;
+		&lt;/li&gt;
+                
+              
+            
+          &lt;/ul&gt;
+	&lt;/div&gt;
+        
 	 &lt;/div&gt;
 
 &lt;/div&gt;
@@ -7244,6 +7256,9 @@ tags: [github-page, jekyll, liquid]
          
          &amp;lt;li class=&quot;cat-item cat-item-6&quot;&amp;gt;
          	&amp;lt;a href=&quot;/categories/hi.html&quot;&amp;gt;hi&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+         
+         &amp;lt;li class=&quot;cat-item cat-item-6&quot;&amp;gt;
+         	&amp;lt;a href=&quot;/categories/markdown.html&quot;&amp;gt;markdown&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
          
      &amp;lt;/ul&amp;gt;
  &amp;lt;/div&amp;gt;
