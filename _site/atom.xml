@@ -4,7 +4,7 @@
  <title>CzliTony's Blog</title>
  <link href="http://http://coolshell.info/atom.xml" rel="self"/>
  <link href="http://http://coolshell.info"/>
- <updated>2016-06-30T12:33:37+08:00</updated>
+ <updated>2016-07-04T19:50:59+08:00</updated>
  <author>
    <name>czli.tony</name>
    <email>czli.tony@gmail.com</email>
@@ -12,12 +12,113 @@
 
  
  <entry>
+   <title>数字签名是什么？</title>
+   <link href="http://http://coolshell.info/blog/2016/07/digital-signature-and-digital-certificate.html"/>
+   <updated>2016-07-04T00:00:00+08:00</updated>
+   <id>/blog/2016/07/digital-signature-and-digital certificate</id>
+   <content type="html">&lt;p&gt;今天，我读到一篇好文章。&lt;br /&gt;
+它用图片通俗易懂地解释了，”数字签名”（digital signature）和”数字证书”（digital certificate）到底是什么。
+我对这些问题的理解，一直是模模糊糊的，很多细节搞不清楚。读完这篇文章后，发现思路一下子就理清了。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;section&quot;&gt;数字签名是什么？&lt;/h1&gt;
+
+&lt;p&gt;作者：David Youd &lt;br /&gt;
+翻译：阮一峰&lt;br /&gt;
+原文网址：http://www.youdzone.com/signature.html &lt;br /&gt;
+转载网址：http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html &lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;1.鲍勃有两把钥匙，一把是公钥，另一把是私钥。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://image.beekka.com/blog/201108/bg2011080901.png&quot; alt=&quot;&quot; /&gt;
+&lt;br /&gt;&lt;br /&gt;
+ 2.鲍勃把公钥送给他的朋友们—-帕蒂、道格、苏珊—-每人一把。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://image.beekka.com/blog/201108/bg2011080902.png&quot; alt=&quot;&quot; /&gt;
+&lt;br /&gt;&lt;br /&gt;
+ 3.苏珊要给鲍勃写一封保密的信。她写完后用鲍勃的公钥加密，就可以达到保密的效果。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://image.beekka.com/blog/201108/bg2011080903.png&quot; alt=&quot;&quot; /&gt;
+&lt;br /&gt;&lt;br /&gt;
+ 4.鲍勃收信后，用私钥解密，就看到了信件内容。这里要强调的是，只要鲍勃的私钥不泄露，这封信就是安全的，即使落在别人手里，也无法解密。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://image.beekka.com/blog/201108/bg2011080904.png&quot; alt=&quot;&quot; /&gt;
+&lt;br /&gt;&lt;br /&gt;
+ 5.鲍勃给苏珊回信，决定采用”数字签名”。他写完后先用Hash函数，生成信件的摘要（digest）。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://image.beekka.com/blog/201108/bg2011080905.png&quot; alt=&quot;&quot; /&gt;
+&lt;br /&gt;&lt;br /&gt;
+ 6.然后，鲍勃使用私钥，对这个摘要加密，生成”数字签名”（signature）。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://image.beekka.com/blog/201108/bg2011080906.png&quot; alt=&quot;&quot; /&gt;
+&lt;br /&gt;&lt;br /&gt;
+ 7.鲍勃将这个签名，附在信件下面，一起发给苏珊。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://image.beekka.com/blog/201108/bg2011080907.png&quot; alt=&quot;&quot; /&gt;
+&lt;br /&gt;&lt;br /&gt;
+ 8.苏珊收信后，取下数字签名，用鲍勃的公钥解密，得到信件的摘要。由此证明，这封信确实是鲍勃发出的。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://image.beekka.com/blog/201108/bg2011080908.png&quot; alt=&quot;&quot; /&gt;
+&lt;br /&gt;&lt;br /&gt;
+ 9.苏珊再对信件本身使用Hash函数，将得到的结果，与上一步得到的摘要进行对比。如果两者一致，就证明这封信未被修改过。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://image.beekka.com/blog/201108/bg2011080909.png&quot; alt=&quot;&quot; /&gt;
+&lt;br /&gt;&lt;br /&gt;
+ 10.复杂的情况出现了。道格想欺骗苏珊，他偷偷使用了苏珊的电脑，用自己的公钥换走了鲍勃的公钥。此时，苏珊实际拥有的是道格的公钥，但是还以为这是鲍勃的公钥。因此，道格就可以冒充鲍勃，用自己的私钥做成”数字签名”，写信给苏珊，让苏珊用假的鲍勃公钥进行解密。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://image.beekka.com/blog/201108/bg2011080910.png&quot; alt=&quot;&quot; /&gt;
+&lt;br /&gt;&lt;br /&gt;
+ 11.后来，苏珊感觉不对劲，发现自己无法确定公钥是否真的属于鲍勃。她想到了一个办法，要求鲍勃去找”证书中心”（certificate authority，简称CA），为公钥做认证。证书中心用自己的私钥，对鲍勃的公钥和一些相关信息一起加密，生成”数字证书”（Digital Certificate）。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://image.beekka.com/blog/201108/bg2011080911.png&quot; alt=&quot;&quot; /&gt;
+&lt;br /&gt;&lt;br /&gt;
+ 12.鲍勃拿到数字证书以后，就可以放心了。以后再给苏珊写信，只要在签名的同时，再附上数字证书就行了。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://image.beekka.com/blog/201108/bg2011080912.png&quot; alt=&quot;&quot; /&gt;
+&lt;br /&gt;&lt;br /&gt;
+ 13.苏珊收信后，用CA的公钥解开数字证书，就可以拿到鲍勃真实的公钥了，然后就能证明”数字签名”是否真的是鲍勃签的。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://image.beekka.com/blog/201108/bg2011080913.png&quot; alt=&quot;&quot; /&gt;
+&lt;br /&gt;&lt;br /&gt;
+ 14.下面，我们看一个应用”数字证书”的实例：https协议。这个协议主要用于网页加密。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://image.beekka.com/blog/201108/bg2011080914.jpg&quot; alt=&quot;&quot; /&gt;
+&lt;br /&gt;&lt;br /&gt;
+ 15.首先，客户端向服务器发出加密请求。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://image.beekka.com/blog/201108/bg2011080915.png&quot; alt=&quot;&quot; /&gt;
+&lt;br /&gt;&lt;br /&gt;
+ 16.服务器用自己的私钥加密网页以后，连同本身的数字证书，一起发送给客户端。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://image.beekka.com/blog/201108/bg2011080916.png&quot; alt=&quot;&quot; /&gt;
+&lt;br /&gt;&lt;br /&gt;
+ 17.客户端（浏览器）的”证书管理器”，有”受信任的根证书颁发机构”列表。客户端会根据这张列表，查看解开数字证书的公钥是否在列表之内。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://image.beekka.com/blog/201108/bg2011080917.png&quot; alt=&quot;&quot; /&gt;
+&lt;br /&gt;&lt;br /&gt;
+ 18.如果数字证书记载的网址，与你正在浏览的网址不一致，就说明这张证书可能被冒用，浏览器会发出警告。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://image.beekka.com/blog/201108/bg2011080918.png&quot; alt=&quot;&quot; /&gt;
+&lt;br /&gt;&lt;br /&gt;
+ 19.如果这张数字证书不是由受信任的机构颁发的，浏览器会发出另一种警告。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://image.beekka.com/blog/201108/bg2011080919.jpg&quot; alt=&quot;&quot; /&gt;
+&lt;br /&gt;&lt;br /&gt;
+ 20.如果数字证书是可靠的，客户端就可以使用证书中的服务器公钥，对信息进行加密，然后与服务器交换加密信息。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://image.beekka.com/blog/201108/bg2011080920.png&quot; alt=&quot;&quot; /&gt;
+&lt;br /&gt;&lt;br /&gt;
+（完）&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
    <title>Cmd Markdown</title>
    <link href="http://http://coolshell.info/blog/2016/06/cmd-markdown.html"/>
    <updated>2016-06-30T00:00:00+08:00</updated>
    <id>/blog/2016/06/cmd-markdown</id>
    <content type="html">&lt;h1 id=&quot;cmd-markdown-&quot;&gt;欢迎使用 Cmd Markdown 编辑阅读器&lt;/h1&gt;
-
 &lt;hr /&gt;
 
 &lt;p&gt;我们理解您需要更便捷更高效的工具记录思想，整理笔记、知识，并将其中承载的价值传播给他人，&lt;strong&gt;Cmd Markdown&lt;/strong&gt; 是我们给出的答案 —— 我们为记录思想和分享知识提供更专业的工具。 您可以使用 Cmd Markdown：&lt;/p&gt;
@@ -70,6 +171,16 @@
 &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__name__&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&#39;__main__&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
     &lt;span class=&quot;c&quot;&gt;# A comment&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&#39;hello world&#39;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@requires_authorization
+class SomeClass:
+pass
+
+if __name__ == &#39;__main__&#39;:
+# A comment
+print &#39;hello world&#39;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
@@ -2889,6 +3000,27 @@ jekyll最新的动态和文档现在可以在&lt;a href=&quot;http://jekyllrb.co
           &lt;/ul&gt;
 	&lt;/div&gt;
         
+	&lt;div post-cate=&quot;network&quot;&gt;
+          &lt;ul class=&quot;posts&quot;&gt;
+            
+              
+                
+              
+            
+              
+                
+		&lt;li&gt;
+                  &lt;a href=&quot;/blog/2016/07/digital-signature-and-digital-certificate.html&quot; class=&quot;post-list-item&quot;&gt;
+                    &lt;h2&gt;数字签名是什么？&lt;/h2&gt;
+                    &lt;span class=&quot;date&quot;&gt;Jul 4, 2016&lt;/span&gt;
+                  &lt;/a&gt;
+		&lt;/li&gt;
+                
+              
+            
+          &lt;/ul&gt;
+	&lt;/div&gt;
+        
 	 &lt;/div&gt;
 
 &lt;/div&gt;
@@ -3041,7 +3173,7 @@ layout: default
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;     Hello TOBI
      Hello tobi has 4 letters!
-     Hello 2016 Jun
+     Hello 2016 Jul
     &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;返回字符串大写的结果：TOBI
@@ -3120,6 +3252,9 @@ tags: [github-page, jekyll, liquid]
          
          &amp;lt;li class=&quot;cat-item cat-item-6&quot;&amp;gt;
          	&amp;lt;a href=&quot;/categories/markdown.html&quot;&amp;gt;markdown&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+         
+         &amp;lt;li class=&quot;cat-item cat-item-6&quot;&amp;gt;
+         	&amp;lt;a href=&quot;/categories/network.html&quot;&amp;gt;network&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
          
      &amp;lt;/ul&amp;gt;
  &amp;lt;/div&amp;gt;
@@ -10967,7 +11102,7 @@ a=c;//非法的，你不能修改const指针的值
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class A{  
     static B b = new B();  
-}  
+}
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
@@ -10981,7 +11116,7 @@ a=c;//非法的，你不能修改const指针的值
 
 &lt;p&gt;带有final修饰符的类是不可派生的。&lt;/p&gt;
 
-&lt;p&gt;在Java核心API中，有许多应用final的例子，例如java.lang.String。为String类指定final防止了使用者覆盖length()方法。&lt;/p&gt;
+&lt;p&gt;在Java核心API中，有许多应用final的例子，例如java.lang.String。为String类指定final防止了使用者覆盖length()方法.&lt;/p&gt;
 
 &lt;p&gt;另外，如果一个类是final的，则该类所有方法都是final的。Java编译器会寻找机会内联（inline）所有的final方法（这和具体的编译器实现有关）。此举能够使性能平均提高50%。&lt;/p&gt;
 

@@ -7,8 +7,9 @@ categories : [markdown]
 tags : [markdown]
 ---
 
-# 欢迎使用 Cmd Markdown 编辑阅读器
 
+
+# 欢迎使用 Cmd Markdown 编辑阅读器
 ------
 
 我们理解您需要更便捷更高效的工具记录思想，整理笔记、知识，并将其中承载的价值传播给他人，**Cmd Markdown** 是我们给出的答案 —— 我们为记录思想和分享知识提供更专业的工具。 您可以使用 Cmd Markdown：
@@ -18,7 +19,7 @@ tags : [markdown]
 > * 撰写发布技术文稿（代码支持）
 > * 撰写发布学术论文（LaTeX 公式支持）
 
-![cmd-markdown-logo](https://www.zybuluo.com/static/img/logo.png)
+![cmd-markdown-logo](https://www.zybuluo.com/static/img/logo.png) 
 
 除了您现在看到的这个 Cmd Markdown 在线版本，您还可以前往以下网址下载：
 
@@ -56,6 +57,16 @@ if __name__ == '__main__':
     print 'hello world'
 ```
 
+```
+@requires_authorization
+class SomeClass:
+pass
+
+if __name__ == '__main__':
+# A comment
+print 'hello world'
+```
+
 ### 4. 高效绘制 [流程图](https://www.zybuluo.com/mdeditor?url=https://www.zybuluo.com/static/editor/md-help.markdown#7-流程图)
 
 ```flow
@@ -80,10 +91,11 @@ Bob-->Alice: I am good thanks!
 ### 6. 绘制表格
 
 | 项目        | 价格   |  数量  |
-| --------   | -----:  | :----:  |
+| --------   | -----:  |:----:  |
 | 计算机     | \$1600 |   5     |
 | 手机        |   \$12   |   12   |
 | 管线        |    \$1    |  234  |
+
 
 ### 7. 更详细语法说明
 
