@@ -17,8 +17,8 @@ tags : [digital signature, digital certificate]
 
 作者：David Youd <br />
 翻译：阮一峰<br />
-原文网址：http://www.youdzone.com/signature.html <br />
-转载网址：http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html <br />
+原文网址：[http://www.youdzone.com/signature.html](http://www.youdzone.com/signature.html) <br />
+转载网址：[http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html](http://www.ruanyifeng.com/blog/2011/08/what_is_a_digital_signature.html) <br />
 
  1.鲍勃有两把钥匙，一把是公钥，另一把是私钥。
 
