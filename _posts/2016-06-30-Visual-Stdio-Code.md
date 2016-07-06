@@ -7,7 +7,7 @@ categories : [Visual Stdio Code]
 tags : [visual stdio code, vsc]
 ---
 
-**Frequently used vsc keyboard shortcuts**
+Below are frequently used vsc keyboard shortcuts
 
 
 - shift+ctrl+A 注释代码块
