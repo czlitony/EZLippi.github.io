@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 解决百度爬虫无法抓取github pages 
-category: Unix/Linux
+category: Linux
 tag: [github]
 ---
 

@@ -4,7 +4,7 @@
  <title>CzliTony's Blog</title>
  <link href="http://http://coolshell.info/atom.xml" rel="self"/>
  <link href="http://http://coolshell.info"/>
- <updated>2016-07-12T19:03:50+08:00</updated>
+ <updated>2016-07-12T19:19:07+08:00</updated>
  <author>
    <name>czli.tony</name>
    <email>czli.tony@gmail.com</email>
@@ -2893,24 +2893,6 @@ jekyll最新的动态和文档现在可以在&lt;a href=&quot;http://jekyllrb.co
               
                 
 		&lt;li&gt;
-                  &lt;a href=&quot;/blog/2014/08/libevent.html&quot; class=&quot;post-list-item&quot;&gt;
-                    &lt;h2&gt;处理并发之二：libevent的eventbuffer&lt;/h2&gt;
-                    &lt;span class=&quot;date&quot;&gt;Aug 24, 2014&lt;/span&gt;
-                  &lt;/a&gt;
-		&lt;/li&gt;
-                
-              
-                
-		&lt;li&gt;
-                  &lt;a href=&quot;/blog/2014/08/linux-epoll.html&quot; class=&quot;post-list-item&quot;&gt;
-                    &lt;h2&gt;处理并发之一：LINUX Epoll机制介绍&lt;/h2&gt;
-                    &lt;span class=&quot;date&quot;&gt;Aug 23, 2014&lt;/span&gt;
-                  &lt;/a&gt;
-		&lt;/li&gt;
-                
-              
-                
-		&lt;li&gt;
                   &lt;a href=&quot;/blog/2014/07/c-advaced-programming.html&quot; class=&quot;post-list-item&quot;&gt;
                     &lt;h2&gt;C语言高级编程指南&lt;/h2&gt;
                     &lt;span class=&quot;date&quot;&gt;Jul 5, 2014&lt;/span&gt;
@@ -3105,6 +3087,36 @@ jekyll最新的动态和文档现在可以在&lt;a href=&quot;http://jekyllrb.co
           &lt;/ul&gt;
 	&lt;/div&gt;
         
+	&lt;div post-cate=&quot;c++&quot;&gt;
+          &lt;ul class=&quot;posts&quot;&gt;
+            
+              
+                
+              
+            
+              
+                
+		&lt;li&gt;
+                  &lt;a href=&quot;/blog/2014/08/libevent.html&quot; class=&quot;post-list-item&quot;&gt;
+                    &lt;h2&gt;处理并发之二：libevent的eventbuffer&lt;/h2&gt;
+                    &lt;span class=&quot;date&quot;&gt;Aug 24, 2014&lt;/span&gt;
+                  &lt;/a&gt;
+		&lt;/li&gt;
+                
+              
+                
+		&lt;li&gt;
+                  &lt;a href=&quot;/blog/2014/08/linux-epoll.html&quot; class=&quot;post-list-item&quot;&gt;
+                    &lt;h2&gt;处理并发之一：LINUX Epoll机制介绍&lt;/h2&gt;
+                    &lt;span class=&quot;date&quot;&gt;Aug 23, 2014&lt;/span&gt;
+                  &lt;/a&gt;
+		&lt;/li&gt;
+                
+              
+            
+          &lt;/ul&gt;
+	&lt;/div&gt;
+        
 	&lt;div post-cate=&quot;web&quot;&gt;
           &lt;ul class=&quot;posts&quot;&gt;
             
@@ -3234,7 +3246,7 @@ jekyll最新的动态和文档现在可以在&lt;a href=&quot;http://jekyllrb.co
           &lt;/ul&gt;
 	&lt;/div&gt;
         
-	&lt;div post-cate=&quot;Unix/Linux&quot;&gt;
+	&lt;div post-cate=&quot;Linux&quot;&gt;
           &lt;ul class=&quot;posts&quot;&gt;
             
               
@@ -3276,7 +3288,49 @@ jekyll最新的动态和文档现在可以在&lt;a href=&quot;http://jekyllrb.co
           &lt;/ul&gt;
 	&lt;/div&gt;
         
-	&lt;div post-cate=&quot;Visual Stdio Code&quot;&gt;
+	&lt;div post-cate=&quot;Visual&quot;&gt;
+          &lt;ul class=&quot;posts&quot;&gt;
+            
+              
+                
+              
+            
+              
+                
+		&lt;li&gt;
+                  &lt;a href=&quot;/blog/2016/06/Visual-Stdio-Code.html&quot; class=&quot;post-list-item&quot;&gt;
+                    &lt;h2&gt;VSC keyboard shortcuts&lt;/h2&gt;
+                    &lt;span class=&quot;date&quot;&gt;Jun 30, 2016&lt;/span&gt;
+                  &lt;/a&gt;
+		&lt;/li&gt;
+                
+              
+            
+          &lt;/ul&gt;
+	&lt;/div&gt;
+        
+	&lt;div post-cate=&quot;Stdio&quot;&gt;
+          &lt;ul class=&quot;posts&quot;&gt;
+            
+              
+                
+              
+            
+              
+                
+		&lt;li&gt;
+                  &lt;a href=&quot;/blog/2016/06/Visual-Stdio-Code.html&quot; class=&quot;post-list-item&quot;&gt;
+                    &lt;h2&gt;VSC keyboard shortcuts&lt;/h2&gt;
+                    &lt;span class=&quot;date&quot;&gt;Jun 30, 2016&lt;/span&gt;
+                  &lt;/a&gt;
+		&lt;/li&gt;
+                
+              
+            
+          &lt;/ul&gt;
+	&lt;/div&gt;
+        
+	&lt;div post-cate=&quot;Code&quot;&gt;
           &lt;ul class=&quot;posts&quot;&gt;
             
               
@@ -3578,6 +3632,9 @@ tags: [github-page, jekyll, liquid]
          	&amp;lt;a href=&quot;/categories/reprints.html&quot;&amp;gt;reprints&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
          
          &amp;lt;li class=&quot;cat-item cat-item-6&quot;&amp;gt;
+         	&amp;lt;a href=&quot;/categories/c++.html&quot;&amp;gt;c++&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+         
+         &amp;lt;li class=&quot;cat-item cat-item-6&quot;&amp;gt;
          	&amp;lt;a href=&quot;/categories/web.html&quot;&amp;gt;web&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
          
          &amp;lt;li class=&quot;cat-item cat-item-6&quot;&amp;gt;
@@ -3590,13 +3647,19 @@ tags: [github-page, jekyll, liquid]
          	&amp;lt;a href=&quot;/categories/c/c++.html&quot;&amp;gt;c/c++&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
          
          &amp;lt;li class=&quot;cat-item cat-item-6&quot;&amp;gt;
-         	&amp;lt;a href=&quot;/categories/Unix/Linux.html&quot;&amp;gt;Unix/Linux&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+         	&amp;lt;a href=&quot;/categories/Linux.html&quot;&amp;gt;Linux&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
          
          &amp;lt;li class=&quot;cat-item cat-item-6&quot;&amp;gt;
          	&amp;lt;a href=&quot;/categories/Git.html&quot;&amp;gt;Git&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
          
          &amp;lt;li class=&quot;cat-item cat-item-6&quot;&amp;gt;
-         	&amp;lt;a href=&quot;/categories/Visual Stdio Code.html&quot;&amp;gt;Visual Stdio Code&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+         	&amp;lt;a href=&quot;/categories/Visual.html&quot;&amp;gt;Visual&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+         
+         &amp;lt;li class=&quot;cat-item cat-item-6&quot;&amp;gt;
+         	&amp;lt;a href=&quot;/categories/Stdio.html&quot;&amp;gt;Stdio&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+         
+         &amp;lt;li class=&quot;cat-item cat-item-6&quot;&amp;gt;
+         	&amp;lt;a href=&quot;/categories/Code.html&quot;&amp;gt;Code&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
          
          &amp;lt;li class=&quot;cat-item cat-item-6&quot;&amp;gt;
          	&amp;lt;a href=&quot;/categories/markdown.html&quot;&amp;gt;markdown&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
