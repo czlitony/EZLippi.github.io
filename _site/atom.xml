@@ -4,7 +4,7 @@
  <title>CzliTony's Blog</title>
  <link href="http://http://coolshell.info/atom.xml" rel="self"/>
  <link href="http://http://coolshell.info"/>
- <updated>2016-07-12T19:24:28+08:00</updated>
+ <updated>2016-07-12T19:28:12+08:00</updated>
  <author>
    <name>czli.tony</name>
    <email>czli.tony@gmail.com</email>
@@ -3096,7 +3096,7 @@ jekyll最新的动态和文档现在可以在&lt;a href=&quot;http://jekyllrb.co
           &lt;/ul&gt;
 	&lt;/div&gt;
         
-	&lt;div post-cate=&quot;c++&quot;&gt;
+	&lt;div post-cate=&quot;cpp&quot;&gt;
           &lt;ul class=&quot;posts&quot;&gt;
             
               
@@ -3575,7 +3575,7 @@ tags: [github-page, jekyll, liquid]
          	&amp;lt;a href=&quot;/categories/reprints.html&quot;&amp;gt;reprints&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
          
          &amp;lt;li class=&quot;cat-item cat-item-6&quot;&amp;gt;
-         	&amp;lt;a href=&quot;/categories/c++.html&quot;&amp;gt;c++&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+         	&amp;lt;a href=&quot;/categories/cpp.html&quot;&amp;gt;cpp&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
          
          &amp;lt;li class=&quot;cat-item cat-item-6&quot;&amp;gt;
          	&amp;lt;a href=&quot;/categories/web.html&quot;&amp;gt;web&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
