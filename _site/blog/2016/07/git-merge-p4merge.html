@@ -6,9 +6,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="如何评价『黑客与画家』 - CzliTony's Blog - czli.tony(czli.tony@gmail.com)">
+    <meta name="description" content="用p4merge解决git冲突问题 - CzliTony's Blog - czli.tony(czli.tony@gmail.com)">
     <title>
-      如何评价『黑客与画家』 - CzliTony's Blog
+      用p4merge解决git冲突问题 - CzliTony's Blog
     </title>
     <!-- Bootstrap Core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -115,64 +115,80 @@
         	<div class="all-posts" post-cate="All">
  		<header>
 		<h1>
-		  如何评价『黑客与画家』
-		  <div class="post-date"><a href="https://github.com/czlitony/czlitony.github.io/edit/master/_posts/2014-11-01-how-to-evaluate-the-hackers-and-painters.md" target="_blank">纠错</a>&nbsp;&nbsp;
+		  用p4merge解决git冲突问题
+		  <div class="post-date"><a href="https://github.com/czlitony/czlitony.github.io/edit/master/_posts/2016-07-12-git-merge-p4merge.md" target="_blank">纠错</a>&nbsp;&nbsp;
 			<span class="glyphicon glyphicon-time"></span>
-			01 Nov 2014
+			12 Jul 2016
 		  </div>
 		</h1>
  		</header>
 		<!-- Author -->
 		<hr>
 		 <article>
-		<p>传送门：<a href="http://t.cn/zlg4njc">黑客与画家:硅谷创业之父Paul Graham文集</a></p>
+		<p>git在遇到冲突的时候除了可以直接编辑文件来解决冲突，也可以借助一些第三方的图形化工具来解决。p4merge是p4v上采用的一种比对工具，本文采用p4merge来解决git冲突，平台是Linux Mint17。</p>
 
-<p>一本好的书，让我们收获的不单单是某种技巧，或者某种方法论， 
-<strong>他教给我们的是一种严密的思维方式，是一种学会把自己的眼光放得更加长远的决策习惯，他促使我们养成独立思考的习惯。</strong>
-他没有送给我们一条大鱼，却把捕捉大鱼的方法交给了我们， <strong>授人以鱼，不如授人以渔</strong>。</p>
+<h2 id="p4merge">p4merge安装</h2>
 
-<p>我一直觉得把一个我们所熟知的很普通的问题讲的非常透彻而且非常清楚是一种相当了不起的能力，
-保罗·格雷尔姆 不仅把问题讲的非常透彻，而且还非常有趣，
-让我们在读的时候感觉趣味盎然，这一点是非常不容易的。</p>
+<ol>
+  <li>
+    <p>到官网下载p4merge,选择linux平台进行下载</p>
 
-<p>很多的互联网从业者想必早就听说过这本书，而且大部分人应该都已经阅读过这本书了，
-所以我就简单的从其他的角度来谈一下我读完本书的一些感想，希望对大家有所帮助。</p>
+    <p><a href="https://www.perforce.com/downloads/integrations">https://www.perforce.com/downloads/integrations</a></p>
+  </li>
+  <li>
+    <p>解压下载的p4merge软件包</p>
 
-<p>在阅读「为什么书呆子不受欢迎」这章时，我想到了这么一句话，「<strong>你的时间在哪里，你的成就就在哪里</strong>」。
-生活中的我们，总是喜欢羡慕那些成功人士，我们总觉得那些成功人士与我们普通人不一样，
-他们必然懂得某种通往成功的诀窍，他们生下来就与周围的人们有所不同。
-我们也总是希望能从这些成功人士那里获得某些珍贵的建议，获得那些能使人最终功成名就的万用妙方。
-在武侠小说里面， <strong>渴望成为武林高手的人，都希望得到一本有着盖世神功的武林秘籍。</strong>
-因为这秘籍一旦得手，只要依葫芦画瓢，就可大功告成。</p>
+    <div class="highlighter-rouge"><pre class="highlight"><code> tar -zxvf p4v.tgz
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>解压之后进入解压出来的文件夹，发现里面会有两个子文件夹bin和lib,将这两个文件夹中的文件分别拷贝到对应的系统目录下，执行以下指令即可：</p>
 
-<p>但是世事又怎会如此简单，也永远不会有这样或者那样的武林秘诀。
-<strong>所谓的成功人士不过是把自己的时间投入到那些他们感兴趣的领域里面罢了。</strong>
-其实， <strong>我们每一个人也许都是我们所投入时间的那个领域的成功人士。</strong>
-有的同学，可能在学校里没有把时间投入学习中，但是呢，投入了很多的时间在游戏领域，每天花费大量的时间去玩游戏，
-看游戏讲解视频，研究游戏的战略，思考游戏的玩法，在这个游戏里面，他就是王者；
-有的人呢，可能喜欢计算机，他喜欢与程序打交道，他希望了解计算机是如何思考的，于是最终他就成了黑客。</p>
+    <div class="highlighter-rouge"><pre class="highlight"><code> sudo cp -rf bin/* /usr/local/bin/
+ sudo cp -rf lib/* /usr/local/lib/
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>这个时候p4merge应该就可以使用了，在控制台输入p4merge应该就会出现diff和merge对话框。下面将会修改git的配置文件来使用p4merge.</p>
+  </li>
+</ol>
 
-<p>画家能够把画画的比我们更好，只是因为他把他的时间都投入到里面罢了，田径运动员跑的比我们更快，
-同样只不过因为他把他的时间都投入到跑步里面罢了。
-<strong>书呆子也并非不想让自己不受欢迎，他们只是更愿意把时间投入到让自己聪明上去罢了。</strong>
-我们每一个人，都可以自己去决定把自己的时间投入到哪个领域，我们所投入的时间最终也会成就我们。</p>
+<h2 id="gitconfig">配置.gitconfig</h2>
 
-<p>在阅读本书的其他章节的时候，我更加深刻的发觉，黑客们，其实与我们并没有多大的不同，
-<strong>他们只是比我们普通人更加崇尚分享、开放和民主，他们对任何被禁止的东西都怀有特别强烈的好奇心，他们喜欢去思考那些似乎不应该被思考的问题，他们相信计算机将会深刻的改变人们的生活。</strong></p>
+<p>打开.gitconfig:</p>
 
-<p>虽然这是一本讲述黑客的书，不过个人觉得每个人都应该看看。
-如同译者阮一峰所言：未来的人类生活不仅是人与人的互动，而且更多的将是人与计算机的互动。
-想要把握这个时代，就必须理解计算机。
-理解计算机的关键，则是要理解计算机背后的人。
-表面上这是一个机器的时代，但是实际上机器的设计者决定了我们的时代。
-<strong>程序员的审美决定了你看到的软件界面，程序员的爱好决定了你有什么样的软件可以使用。</strong></p>
+<div class="highlighter-rouge"><pre class="highlight"><code>vim ~/.gitconfig
+</code></pre>
+</div>
 
-<p>如果你想要进一步了解作者的话，下面这两个链接可以帮助你：</p>
+<p>向其中添加以下内容：</p>
 
-<ul>
-  <li>作者博客主页： <a href="http://www.paulgraham.com">http://www.paulgraham.com</a></li>
-  <li>Wiki 百科上关于他的介绍： <a href="http://en.wikipedia.org/wiki/Paul_Graham_(computer_programmer)">http://en.wikipedia.org/wiki/Paul_Graham_(computer_programmer)</a></li>
-</ul>
+<div class="highlighter-rouge"><pre class="highlight"><code>[diff]
+    tool = p4merge
+[difftool]
+    prompt = false
+[merge]
+    tool = p4merge
+[mergetool]
+    prompt = false
+</code></pre>
+</div>
+
+<h2 id="section">使用</h2>
+
+<p>查看diff</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>git difftool
+</code></pre>
+</div>
+
+<p>解决冲突</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>git mergetool
+</code></pre>
+</div>
 
 
 		  </article>
@@ -187,16 +203,16 @@
 	  
 	  <span class="next">
 	    上篇：
-	    <a href="/blog/2014/10/how-to-use-smack.html">
-	      Smack开发手册
+	    <a href="/blog/2016/07/ssl-vpn-detailed-explanation.html">
+	      技术点详解---SSL VPN
 	    </a>
 	  </span>
 	   
 	  
 	  <span class="prev">
 	    下篇：
-	    <a href="/blog/2014/11/leveldb.html">
-	      leveldb原理剖析
+	    <a href="/blog/2016/07/samba.html">
+	      Samba配置方案
 	    </a>
 	  </span>
 	  
@@ -768,7 +784,7 @@ UY END -->
 <!-- 多说评论框 start -->
   <div class="post-comment">
             <span>Comments</span>
-	<div class="ds-thread" data-thread-key="/blog/2014/11/how-to-evaluate-the-hackers-and-painters" data-title="如何评价『黑客与画家』" data-url="LippiOuYang.github.io/blog/2014/11/how-to-evaluate-the-hackers-and-painters.html">
+	<div class="ds-thread" data-thread-key="/blog/2016/07/git-merge-p4merge" data-title="用p4merge解决git冲突问题" data-url="LippiOuYang.github.io/blog/2016/07/git-merge-p4merge.html">
 	</div>
  </div>
 <!-- 多说评论框 end -->

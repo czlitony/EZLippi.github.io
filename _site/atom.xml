@@ -4,7 +4,7 @@
  <title>CzliTony's Blog</title>
  <link href="http://http://coolshell.info/atom.xml" rel="self"/>
  <link href="http://http://coolshell.info"/>
- <updated>2016-07-12T19:30:00+08:00</updated>
+ <updated>2016-07-13T00:01:37+08:00</updated>
  <author>
    <name>czli.tony</name>
    <email>czli.tony@gmail.com</email>
@@ -102,6 +102,79 @@
 &lt;/div&gt;
 
 &lt;p&gt;下面就可以愉快地访问共享的文件了&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>用p4merge解决git冲突问题</title>
+   <link href="http://http://coolshell.info/blog/2016/07/git-merge-p4merge.html"/>
+   <updated>2016-07-12T00:00:00+08:00</updated>
+   <id>/blog/2016/07/git-merge-p4merge</id>
+   <content type="html">&lt;p&gt;git在遇到冲突的时候除了可以直接编辑文件来解决冲突，也可以借助一些第三方的图形化工具来解决。p4merge是p4v上采用的一种比对工具，本文采用p4merge来解决git冲突，平台是Linux Mint17。&lt;/p&gt;
+
+&lt;h2 id=&quot;p4merge&quot;&gt;p4merge安装&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;到官网下载p4merge,选择linux平台进行下载&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;https://www.perforce.com/downloads/integrations&quot;&gt;https://www.perforce.com/downloads/integrations&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;解压下载的p4merge软件包&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; tar -zxvf p4v.tgz
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;解压之后进入解压出来的文件夹，发现里面会有两个子文件夹bin和lib,将这两个文件夹中的文件分别拷贝到对应的系统目录下，执行以下指令即可：&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; sudo cp -rf bin/* /usr/local/bin/
+ sudo cp -rf lib/* /usr/local/lib/
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;这个时候p4merge应该就可以使用了，在控制台输入p4merge应该就会出现diff和merge对话框。下面将会修改git的配置文件来使用p4merge.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;gitconfig&quot;&gt;配置.gitconfig&lt;/h2&gt;
+
+&lt;p&gt;打开.gitconfig:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vim ~/.gitconfig
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;向其中添加以下内容：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[diff]
+    tool = p4merge
+[difftool]
+    prompt = false
+[merge]
+    tool = p4merge
+[mergetool]
+    prompt = false
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;使用&lt;/h2&gt;
+
+&lt;p&gt;查看diff&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git difftool
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;解决冲突&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git mergetool
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
 </content>
  </entry>
  
@@ -3271,6 +3344,15 @@ jekyll最新的动态和文档现在可以在&lt;a href=&quot;http://jekyllrb.co
                 
               
             
+              
+                
+		&lt;li&gt;
+                  &lt;a href=&quot;/blog/2016/07/git-merge-p4merge.html&quot; class=&quot;post-list-item&quot;&gt;
+                    &lt;h2&gt;用p4merge解决git冲突问题&lt;/h2&gt;
+                    &lt;span class=&quot;date&quot;&gt;Jul 12, 2016&lt;/span&gt;
+                  &lt;/a&gt;
+		&lt;/li&gt;
+                
               
                 
 		&lt;li&gt;
