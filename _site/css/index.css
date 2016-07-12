@@ -124,10 +124,6 @@ nav{
 	text-align: center;
 }
 
-.navbar-fixed-top{
-    position:fixed;
-    -webkit-position:relative;
-}
 
 /* index main */
 .main{
