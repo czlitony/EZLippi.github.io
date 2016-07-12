@@ -4,7 +4,7 @@
  <title>CzliTony's Blog</title>
  <link href="http://http://coolshell.info/atom.xml" rel="self"/>
  <link href="http://http://coolshell.info"/>
- <updated>2016-07-12T19:19:07+08:00</updated>
+ <updated>2016-07-12T19:24:28+08:00</updated>
  <author>
    <name>czli.tony</name>
    <email>czli.tony@gmail.com</email>
@@ -2893,6 +2893,15 @@ jekyll最新的动态和文档现在可以在&lt;a href=&quot;http://jekyllrb.co
               
                 
 		&lt;li&gt;
+                  &lt;a href=&quot;/blog/2014/12/c-open-project.html&quot; class=&quot;post-list-item&quot;&gt;
+                    &lt;h2&gt;值得推荐的C/C++框架和库&lt;/h2&gt;
+                    &lt;span class=&quot;date&quot;&gt;Dec 13, 2014&lt;/span&gt;
+                  &lt;/a&gt;
+		&lt;/li&gt;
+                
+              
+                
+		&lt;li&gt;
                   &lt;a href=&quot;/blog/2014/07/c-advaced-programming.html&quot; class=&quot;post-list-item&quot;&gt;
                     &lt;h2&gt;C语言高级编程指南&lt;/h2&gt;
                     &lt;span class=&quot;date&quot;&gt;Jul 5, 2014&lt;/span&gt;
@@ -3097,6 +3106,15 @@ jekyll最新的动态和文档现在可以在&lt;a href=&quot;http://jekyllrb.co
               
                 
 		&lt;li&gt;
+                  &lt;a href=&quot;/blog/2014/12/c-open-project.html&quot; class=&quot;post-list-item&quot;&gt;
+                    &lt;h2&gt;值得推荐的C/C++框架和库&lt;/h2&gt;
+                    &lt;span class=&quot;date&quot;&gt;Dec 13, 2014&lt;/span&gt;
+                  &lt;/a&gt;
+		&lt;/li&gt;
+                
+              
+                
+		&lt;li&gt;
                   &lt;a href=&quot;/blog/2014/08/libevent.html&quot; class=&quot;post-list-item&quot;&gt;
                     &lt;h2&gt;处理并发之二：libevent的eventbuffer&lt;/h2&gt;
                     &lt;span class=&quot;date&quot;&gt;Aug 24, 2014&lt;/span&gt;
@@ -3225,28 +3243,7 @@ jekyll最新的动态和文档现在可以在&lt;a href=&quot;http://jekyllrb.co
           &lt;/ul&gt;
 	&lt;/div&gt;
         
-	&lt;div post-cate=&quot;c/c++&quot;&gt;
-          &lt;ul class=&quot;posts&quot;&gt;
-            
-              
-                
-              
-            
-              
-                
-		&lt;li&gt;
-                  &lt;a href=&quot;/blog/2014/12/c-open-project.html&quot; class=&quot;post-list-item&quot;&gt;
-                    &lt;h2&gt;值得推荐的C/C++框架和库&lt;/h2&gt;
-                    &lt;span class=&quot;date&quot;&gt;Dec 13, 2014&lt;/span&gt;
-                  &lt;/a&gt;
-		&lt;/li&gt;
-                
-              
-            
-          &lt;/ul&gt;
-	&lt;/div&gt;
-        
-	&lt;div post-cate=&quot;Linux&quot;&gt;
+	&lt;div post-cate=&quot;linux&quot;&gt;
           &lt;ul class=&quot;posts&quot;&gt;
             
               
@@ -3288,7 +3285,7 @@ jekyll最新的动态和文档现在可以在&lt;a href=&quot;http://jekyllrb.co
           &lt;/ul&gt;
 	&lt;/div&gt;
         
-	&lt;div post-cate=&quot;Visual&quot;&gt;
+	&lt;div post-cate=&quot;tools&quot;&gt;
           &lt;ul class=&quot;posts&quot;&gt;
             
               
@@ -3298,45 +3295,12 @@ jekyll最新的动态和文档现在可以在&lt;a href=&quot;http://jekyllrb.co
               
                 
 		&lt;li&gt;
-                  &lt;a href=&quot;/blog/2016/06/Visual-Stdio-Code.html&quot; class=&quot;post-list-item&quot;&gt;
-                    &lt;h2&gt;VSC keyboard shortcuts&lt;/h2&gt;
-                    &lt;span class=&quot;date&quot;&gt;Jun 30, 2016&lt;/span&gt;
+                  &lt;a href=&quot;/blog/2016/07/samba.html&quot; class=&quot;post-list-item&quot;&gt;
+                    &lt;h2&gt;Samba配置方案&lt;/h2&gt;
+                    &lt;span class=&quot;date&quot;&gt;Jul 12, 2016&lt;/span&gt;
                   &lt;/a&gt;
 		&lt;/li&gt;
                 
-              
-            
-          &lt;/ul&gt;
-	&lt;/div&gt;
-        
-	&lt;div post-cate=&quot;Stdio&quot;&gt;
-          &lt;ul class=&quot;posts&quot;&gt;
-            
-              
-                
-              
-            
-              
-                
-		&lt;li&gt;
-                  &lt;a href=&quot;/blog/2016/06/Visual-Stdio-Code.html&quot; class=&quot;post-list-item&quot;&gt;
-                    &lt;h2&gt;VSC keyboard shortcuts&lt;/h2&gt;
-                    &lt;span class=&quot;date&quot;&gt;Jun 30, 2016&lt;/span&gt;
-                  &lt;/a&gt;
-		&lt;/li&gt;
-                
-              
-            
-          &lt;/ul&gt;
-	&lt;/div&gt;
-        
-	&lt;div post-cate=&quot;Code&quot;&gt;
-          &lt;ul class=&quot;posts&quot;&gt;
-            
-              
-                
-              
-            
               
                 
 		&lt;li&gt;
@@ -3394,27 +3358,6 @@ jekyll最新的动态和文档现在可以在&lt;a href=&quot;http://jekyllrb.co
                   &lt;a href=&quot;/blog/2016/07/digital-signature-and-digital-certificate.html&quot; class=&quot;post-list-item&quot;&gt;
                     &lt;h2&gt;数字签名是什么？&lt;/h2&gt;
                     &lt;span class=&quot;date&quot;&gt;Jul 4, 2016&lt;/span&gt;
-                  &lt;/a&gt;
-		&lt;/li&gt;
-                
-              
-            
-          &lt;/ul&gt;
-	&lt;/div&gt;
-        
-	&lt;div post-cate=&quot;tools&quot;&gt;
-          &lt;ul class=&quot;posts&quot;&gt;
-            
-              
-                
-              
-            
-              
-                
-		&lt;li&gt;
-                  &lt;a href=&quot;/blog/2016/07/samba.html&quot; class=&quot;post-list-item&quot;&gt;
-                    &lt;h2&gt;Samba配置方案&lt;/h2&gt;
-                    &lt;span class=&quot;date&quot;&gt;Jul 12, 2016&lt;/span&gt;
                   &lt;/a&gt;
 		&lt;/li&gt;
                 
@@ -3644,31 +3587,19 @@ tags: [github-page, jekyll, liquid]
          	&amp;lt;a href=&quot;/categories/algorithm.html&quot;&amp;gt;algorithm&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
          
          &amp;lt;li class=&quot;cat-item cat-item-6&quot;&amp;gt;
-         	&amp;lt;a href=&quot;/categories/c/c++.html&quot;&amp;gt;c/c++&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
-         
-         &amp;lt;li class=&quot;cat-item cat-item-6&quot;&amp;gt;
-         	&amp;lt;a href=&quot;/categories/Linux.html&quot;&amp;gt;Linux&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+         	&amp;lt;a href=&quot;/categories/linux.html&quot;&amp;gt;linux&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
          
          &amp;lt;li class=&quot;cat-item cat-item-6&quot;&amp;gt;
          	&amp;lt;a href=&quot;/categories/Git.html&quot;&amp;gt;Git&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
          
          &amp;lt;li class=&quot;cat-item cat-item-6&quot;&amp;gt;
-         	&amp;lt;a href=&quot;/categories/Visual.html&quot;&amp;gt;Visual&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
-         
-         &amp;lt;li class=&quot;cat-item cat-item-6&quot;&amp;gt;
-         	&amp;lt;a href=&quot;/categories/Stdio.html&quot;&amp;gt;Stdio&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
-         
-         &amp;lt;li class=&quot;cat-item cat-item-6&quot;&amp;gt;
-         	&amp;lt;a href=&quot;/categories/Code.html&quot;&amp;gt;Code&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+         	&amp;lt;a href=&quot;/categories/tools.html&quot;&amp;gt;tools&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
          
          &amp;lt;li class=&quot;cat-item cat-item-6&quot;&amp;gt;
          	&amp;lt;a href=&quot;/categories/markdown.html&quot;&amp;gt;markdown&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
          
          &amp;lt;li class=&quot;cat-item cat-item-6&quot;&amp;gt;
          	&amp;lt;a href=&quot;/categories/network.html&quot;&amp;gt;network&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
-         
-         &amp;lt;li class=&quot;cat-item cat-item-6&quot;&amp;gt;
-         	&amp;lt;a href=&quot;/categories/tools.html&quot;&amp;gt;tools&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
          
      &amp;lt;/ul&amp;gt;
  &amp;lt;/div&amp;gt;

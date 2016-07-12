@@ -3,7 +3,7 @@ layout: post
 title: VSC keyboard shortcuts
 description: vsc frequently used keyboard shortcuts
 keywords: vsc
-categories : Visual Stdio Code
+categories : tools
 tags : [visual stdio code, vsc]
 ---
 
