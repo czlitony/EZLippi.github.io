@@ -6,9 +6,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="VSC keyboard shortcuts - CzliTony's Blog - czli.tony(czli.tony@gmail.com)">
+    <meta name="description" content="Vmware vSphere虚拟机与主机共享剪贴板 - CzliTony's Blog - czli.tony(czli.tony@gmail.com)">
     <title>
-      VSC keyboard shortcuts - CzliTony's Blog
+      Vmware vSphere虚拟机与主机共享剪贴板 - CzliTony's Blog
     </title>
     <!-- Bootstrap Core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -115,73 +115,43 @@
         	<div class="all-posts" post-cate="All">
  		<header>
 		<h1>
-		  VSC keyboard shortcuts
-		  <div class="post-date"><a href="https://github.com/czlitony/czlitony.github.io/edit/master/_posts/2016-06-30-Visual-Stdio-Code.md" target="_blank">纠错</a>&nbsp;&nbsp;
+		  Vmware vSphere虚拟机与主机共享剪贴板
+		  <div class="post-date"><a href="https://github.com/czlitony/czlitony.github.io/edit/master/_posts/2016-07-12-vmvare-vsphere-share-plate.md" target="_blank">纠错</a>&nbsp;&nbsp;
 			<span class="glyphicon glyphicon-time"></span>
-			30 Jun 2016
+			12 Jul 2016
 		  </div>
 		</h1>
  		</header>
 		<!-- Author -->
 		<hr>
 		 <article>
-		<p>Below are frequently used vsc keyboard shortcuts</p>
+		<p>默认情况下，Vmware vSphere已禁用针对ESXESXi的复制和粘贴操作，以防止公开已复制到剪贴板中的敏感数据。其实可以通过设置启用它，具体操作如下：</p>
 
-<ul>
-  <li>shift+ctrl+A 注释代码块</li>
+<ol>
   <li>
-    <p>ctrl+/       注释</p>
-  </li>
-  <li>shift+ctrl+alt+[ 整个文件函数折叠</li>
-  <li>shift+ctrl+alt+] 整个文件函数展开</li>
-  <li>shift+ctrl+[ 单个函数折叠</li>
-  <li>
-    <p>shift+ctrl+] 单个函数展开</p>
-  </li>
-  <li>ctrl+[ 缩进</li>
-  <li>
-    <p>Ctrl+] 后退</p>
-  </li>
-  <li>Ctrl+I       选中一行</li>
-  <li>shift+ctrl+K 删除一行</li>
-  <li>
-    <p>ctrl+Enter   在当前行后插入一行</p>
-  </li>
-  <li>Ctrl+P       搜索最近打开的文档 alt+tab可以选择</li>
-  <li>Ctrl+T       在当前文件里查找符号</li>
-  <li>
-    <p>shift+ctrl+O 在工作空间里查找符号</p>
+    <p>使用 vSphere Client 登录到 vCenter Server 系统并选择虚拟机，虚拟机要在关闭状态下。</p>
   </li>
   <li>
-    <p>按住Ctrl, 单击导航栏的文件名会显示在右侧</p>
-  </li>
-  <li>Ctrl+Down  鼠标位置不变，文件下移</li>
-  <li>
-    <p>Ctrl+Up	   鼠标位置不变，文件上移</p>
-  </li>
-  <li>F3	   向后查找</li>
-  <li>
-    <p>Shift+F3   向前查找</p>
+    <p>选中虚拟机，单击右键编辑设置。</p>
   </li>
   <li>
-    <p>F1   显示所有命令</p>
-  </li>
-  <li>ctrl+click或F12 转到定义</li>
-  <li>ctrl+hover      显示定义或声明</li>
-  <li>
-    <p>shift+alt+F10   快速显示定义</p>
-  </li>
-  <li>ctrl+F2      高亮所有选中的单词</li>
-  <li>
-    <p>shift+ctrl+L 高亮所有选中的内容</p>
+    <p>选择选项 &gt; 高级 &gt; 常规，然后单击配置参数。</p>
   </li>
   <li>
-    <p>shift+alt   multi select</p>
+    <p>单击添加行，并在“名称”和“值”列中键入以下值。名称值</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code> isolation.tools.copy.disable     false
+ isolation.tools.paste.disable    false
+</code></pre>
+    </div>
   </li>
-  <li>自定义：</li>
-  <li>ctrl+left  后退</li>
-  <li>ctrl+right 前进</li>
-</ul>
+  <li>
+    <p>单击确定以关闭“配置参数”对话框，然后再次单击确定以关闭“虚拟机属性”对话框。</p>
+  </li>
+  <li>
+    <p>重新启动虚拟机。</p>
+  </li>
+</ol>
 
 		  </article>
 		<hr>
@@ -195,18 +165,11 @@
 	  
 	  <span class="next">
 	    上篇：
-	    <a href="/blog/2016/02/git-guide.html">
-	      Git操作手册|命令速查表
+	    <a href="/blog/2016/07/samba.html">
+	      Samba配置方案
 	    </a>
 	  </span>
 	   
-	  
-	  <span class="prev">
-	    下篇：
-	    <a href="/blog/2016/06/cmd-markdown.html">
-	      Cmd Markdown
-	    </a>
-	  </span>
 	  
 	</div>
 	</div>
@@ -770,7 +733,7 @@ UY END -->
 <!-- 多说评论框 start -->
   <div class="post-comment">
             <span>Comments</span>
-	<div class="ds-thread" data-thread-key="/blog/2016/06/Visual-Stdio-Code" data-title="VSC keyboard shortcuts" data-url="LippiOuYang.github.io/blog/2016/06/Visual-Stdio-Code.html">
+	<div class="ds-thread" data-thread-key="/blog/2016/07/vmvare-vsphere-share-plate" data-title="Vmware vSphere虚拟机与主机共享剪贴板" data-url="LippiOuYang.github.io/blog/2016/07/vmvare-vsphere-share-plate.html">
 	</div>
  </div>
 <!-- 多说评论框 end -->
