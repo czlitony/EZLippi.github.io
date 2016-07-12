@@ -6,9 +6,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="解决百度爬虫无法抓取github pages - CzliTony's Blog - czli.tony(czli.tony@gmail.com)">
+    <meta name="description" content="Samba配置方案 - CzliTony's Blog - czli.tony(czli.tony@gmail.com)">
     <title>
-      解决百度爬虫无法抓取github pages - CzliTony's Blog
+      Samba配置方案 - CzliTony's Blog
     </title>
     <!-- Bootstrap Core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -115,60 +115,67 @@
         	<div class="all-posts" post-cate="All">
  		<header>
 		<h1>
-		  解决百度爬虫无法抓取github pages
-		  <div class="post-date"><a href="https://github.com/czlitony/czlitony.github.io/edit/master/_posts/2016-02-18-baidu-spider-forbidden.md" target="_blank">纠错</a>&nbsp;&nbsp;
+		  Samba配置方案
+		  <div class="post-date"><a href="https://github.com/czlitony/czlitony.github.io/edit/master/_posts/2016-07-12-samba.md" target="_blank">纠错</a>&nbsp;&nbsp;
 			<span class="glyphicon glyphicon-time"></span>
-			18 Feb 2016
+			12 Jul 2016
 		  </div>
 		</h1>
  		</header>
 		<!-- Author -->
 		<hr>
 		 <article>
-		<p>由于Github Pages禁止了百度爬虫，导致自己的博客无法被百度索引到，使用七牛云和又拍云做镜像存储能解决问题，但是要求域名要备案，由于我的域名从Godaddy上购买的，国内备案手续太复杂，故放弃了CDN的办法，琢磨了一段时间找到了Gitcafe的解决办法。</p>
+		<p>对于samba的配置有多种方案，本方案使所有的guest用户都可以不用输入用户名密码都能访问共享的文件夹。基于Linux Mint17来进行配置。</p>
 
-<p>##解决方案</p>
+<h2 id="samba">安装samba</h2>
 
-<p>既然不想放弃Github，唯一的办法就是不让百度爬虫直接抓取GIthub的内容，而是抓取自己网站的一个镜像，将网站的内容镜像到<a href="www.gitcafe.com">gitcafe</a>,步骤如下：</p>
+<p>安装samba比较简单，在控制台输入:</p>
 
-<ul>
-  <li>注册 gitcafe 帐号</li>
-  <li>创建一个跟用户名一样的项目,比如我的<a href="https://gitcafe.com/ezlippi/ezlippi">https://gitcafe.com/ezlippi/ezlipp</a></li>
-  <li>把 github 的项目推到 gitcafe 上面去，步骤如下：</li>
-</ul>
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo apt-get install samba
+</code></pre>
+</div>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">git remote add gitcafe https://gitcafe.com/ezlippi/ezlippi.git
-git checkout -b gitcafe-pages
-切换到一个新分支 <span class="s1">'gitcafe-pages'</span>
-git push gitcafe master:gitcafe-pages
-Username <span class="k">for</span> <span class="s1">'https://gitcafe.com'</span>:ezlippi 
-Password <span class="k">for</span> <span class="s1">'https://ezlippi@gitcafe.com'</span>
-Counting objects: 17, <span class="k">done</span>.
-Delta compression using up to 4 threads.
-Compressing objects: 100% <span class="o">(</span>10/10<span class="o">)</span>, <span class="k">done</span>.
-Writing objects: 100% <span class="o">(</span>10/10<span class="o">)</span>, 1.06 KiB | 0 bytes/s, <span class="k">done</span>.
-Total 10 <span class="o">(</span>delta 8<span class="o">)</span>, reused 0 <span class="o">(</span>delta 0<span class="o">)</span>
-To https://gitcafe.com/ezlippi/ezlippi.git
-   f0d0296..51611d7  master -&gt; gitcafe-pages</code></pre></figure>
+<p>在Mint上还需要安装一些库：</p>
 
-<ul>
-  <li>gitcafe绑定自己的域名</li>
-</ul>
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo apt-get install -y libsmbclient libsmbclient-dev libtevent0 libtalloc2
+</code></pre>
+</div>
 
-<ol>
-  <li>点击项目的右上角的 项目配置</li>
-  <li>在项目的 基础设置 中配置项目主页</li>
-  <li>在 page服务 中添加自己的域名，比如我这里是<a href="coolshell.info">coolshell.info</a>和<a href="www.coolshell.info">www.coolshell.info</a>.</li>
-</ol>
+<h2 id="section">配置</h2>
 
-<ul>
-  <li>DNS的配置中增加一项 CNAME.</li>
-</ul>
+<p>这种方案的配置比较简单，配置文件为：</p>
 
-<p>我使用 dnspod 这个提供商来管理DNS.CNAME一般可以按解析路线或者网络类型来单独配置,网络类型选择国内或者联通，设置之后等待一段时间百度的抓取就 恢复正常了，如下图所示：</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>/etc/samba/smb.conf 
+</code></pre>
+</div>
 
-<p><img src="/images/dnspod.png" alt="" /></p>
+<p>原文件不变，向其中加入下面这段内容：</p>
 
+<div class="highlighter-rouge"><pre class="highlight"><code>[public]
+    path = /home/tony 
+    available = yes    
+    browseable = yes
+    writeable = yes
+    public = yes 
+    guest ok = yes
+</code></pre>
+</div>
+
+<p>path是要共享的文件夹路径，我共享的是/home/tony这个文件夹下的所有内容。对于这个文件夹需要修改其权限为：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>chmod 777 /home/tony
+</code></pre>
+</div>
+
+<h2 id="section-1">重启服务</h2>
+
+<p>在控制台中输入：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo service smbd restart
+</code></pre>
+</div>
+
+<p>下面就可以愉快地访问共享的文件了</p>
 
 		  </article>
 		<hr>
@@ -182,18 +189,11 @@ To https://gitcafe.com/ezlippi/ezlippi.git
 	  
 	  <span class="next">
 	    上篇：
-	    <a href="/blog/2015/03/vim-plugins.html">
-	      一些强大的Vim插件
+	    <a href="/blog/2016/07/ssl-vpn-detailed-explanation.html">
+	      技术点详解---SSL VPN
 	    </a>
 	  </span>
 	   
-	  
-	  <span class="prev">
-	    下篇：
-	    <a href="/blog/2016/02/git-guide.html">
-	      Git操作手册|命令速查表
-	    </a>
-	  </span>
 	  
 	</div>
 	</div>
@@ -748,7 +748,7 @@ UY END -->
 <!-- 多说评论框 start -->
   <div class="post-comment">
             <span>Comments</span>
-	<div class="ds-thread" data-thread-key="/blog/2016/02/baidu-spider-forbidden" data-title="解决百度爬虫无法抓取github pages" data-url="LippiOuYang.github.io/blog/2016/02/baidu-spider-forbidden.html">
+	<div class="ds-thread" data-thread-key="/blog/2016/07/samba" data-title="Samba配置方案" data-url="LippiOuYang.github.io/blog/2016/07/samba.html">
 	</div>
  </div>
 <!-- 多说评论框 end -->

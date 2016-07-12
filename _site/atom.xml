@@ -4,12 +4,71 @@
  <title>CzliTony's Blog</title>
  <link href="http://http://coolshell.info/atom.xml" rel="self"/>
  <link href="http://http://coolshell.info"/>
- <updated>2016-07-06T17:46:01+08:00</updated>
+ <updated>2016-07-12T08:25:11+08:00</updated>
  <author>
    <name>czli.tony</name>
    <email>czli.tony@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Samba配置方案</title>
+   <link href="http://http://coolshell.info/blog/2016/07/samba.html"/>
+   <updated>2016-07-12T00:00:00+08:00</updated>
+   <id>/blog/2016/07/samba</id>
+   <content type="html">&lt;p&gt;对于samba的配置有多种方案，本方案使所有的guest用户都可以不用输入用户名密码都能访问共享的文件夹。基于Linux Mint17来进行配置。&lt;/p&gt;
+
+&lt;h2 id=&quot;samba&quot;&gt;安装samba&lt;/h2&gt;
+
+&lt;p&gt;安装samba比较简单，在控制台输入:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get install samba
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;在Mint上还需要安装一些库：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get install -y libsmbclient libsmbclient-dev libtevent0 libtalloc2
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;配置&lt;/h2&gt;
+
+&lt;p&gt;这种方案的配置比较简单，配置文件为：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/etc/samba/smb.conf 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;原文件不变，向其中加入下面这段内容：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[public]
+    path = /home/tony 
+    available = yes    
+    browseable = yes
+    writeable = yes
+    public = yes 
+    guest ok = yes
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;path是要共享的文件夹路径，我共享的是/home/tony这个文件夹下的所有内容。对于这个文件夹需要修改其权限为：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;chmod 777 /home/tony
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;重启服务&lt;/h2&gt;
+
+&lt;p&gt;在控制台中输入：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo service smbd restart
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;下面就可以愉快地访问共享的文件了&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>技术点详解---SSL VPN</title>
@@ -3245,6 +3304,27 @@ jekyll最新的动态和文档现在可以在&lt;a href=&quot;http://jekyllrb.co
           &lt;/ul&gt;
 	&lt;/div&gt;
         
+	&lt;div post-cate=&quot;tools&quot;&gt;
+          &lt;ul class=&quot;posts&quot;&gt;
+            
+              
+                
+              
+            
+              
+                
+		&lt;li&gt;
+                  &lt;a href=&quot;/blog/2016/07/samba.html&quot; class=&quot;post-list-item&quot;&gt;
+                    &lt;h2&gt;Samba配置方案&lt;/h2&gt;
+                    &lt;span class=&quot;date&quot;&gt;Jul 12, 2016&lt;/span&gt;
+                  &lt;/a&gt;
+		&lt;/li&gt;
+                
+              
+            
+          &lt;/ul&gt;
+	&lt;/div&gt;
+        
 	 &lt;/div&gt;
 
 &lt;/div&gt;
@@ -3479,6 +3559,9 @@ tags: [github-page, jekyll, liquid]
          
          &amp;lt;li class=&quot;cat-item cat-item-6&quot;&amp;gt;
          	&amp;lt;a href=&quot;/categories/network.html&quot;&amp;gt;network&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+         
+         &amp;lt;li class=&quot;cat-item cat-item-6&quot;&amp;gt;
+         	&amp;lt;a href=&quot;/categories/tools.html&quot;&amp;gt;tools&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
          
      &amp;lt;/ul&amp;gt;
  &amp;lt;/div&amp;gt;
